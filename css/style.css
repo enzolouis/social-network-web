@@ -1,0 +1,12 @@
+:root {
+	--primary-background: #eeeeee;
+	--primary-foreground: black;
+	
+	--secondary-background: #eeeeee;
+	--secondary-foreground: black;
+}
+
+button {
+	border: none;
+}
+
