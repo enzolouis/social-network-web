@@ -10,9 +10,11 @@
     require("userDAO.php");
     require("messageDAO.php");
     $pdo = createConnection();
-
+    echo "yo";
     echo getUserById($pdo, "firstUser");
-    foreach (getMessagesBetweenPeople($pdo, "xouxou", "Nautilus") as $message){
+    $xouxou = new User('xouxou', 'Maxence Maury-Balit', 'xxx', 'Wise mystical tree enjoyer');
+    $nautilus = new User('Nautilus', 'Zoubairov Ibrahim', 'yyy', 'NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOON');
+    foreach (getMessagesBetweenPeople($pdo, $xouxou, $nautilus) as $message){
         if ($message->getSender() == "xouxou"){
             echo "<i>" . $message->getSentHour() . "</i><br>";
             echo $message->getContent() . "<br><br>";
@@ -20,8 +22,20 @@
             echo str_repeat('&nbsp;', 50) . "<i>" . $message->getSentHour() . "</i><br>";
             echo str_repeat('&nbsp;', 50) . $message->getContent() . "<br><br>";
         }
-        
-    } 
+    }
+ 
+    addMessage($pdo, $xouxou, $nautilus, date('Y-m-d'), "17:59:42", "Bye bye", 0);
+
+    echo "<br><br><br><br>";
+    foreach (getMessagesBetweenPeople($pdo, $xouxou, $nautilus) as $message){
+        if ($message->getSender() == "xouxou"){
+            echo "<i>" . $message->getSentHour() . "</i><br>";
+            echo $message->getContent() . "<br><br>";
+        } else {
+            echo str_repeat('&nbsp;', 50) . "<i>" . $message->getSentHour() . "</i><br>";
+            echo str_repeat('&nbsp;', 50) . $message->getContent() . "<br><br>";
+        } 
+    }
 
     ?>
 </body>
