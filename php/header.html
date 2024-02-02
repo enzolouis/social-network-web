@@ -1,46 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ddd</title>
-	<link type="text/css" href="../css/reset.css" rel="stylesheet">
-	<link type="text/css" href="../css/style.css" rel="stylesheet">
-	<link type="text/css" href="../css/header.css" rel="stylesheet">
-	<script defer src="https://use.fontawesome.com/releases/v6.4.2/js/all.js"></script>
-</head>
-<body>
-	<header id="container" style="overflow: hidden;" onmouseleave="decreaseHeaderWidth()">
-		<!--<img src="https://cdn.glitch.com/ebf42836-90db-41ca-adf5-2119d87f3473%2Ffree-home-icon-189-thumb.png?v=1600536429967">
-		<h1>Titre</h1>-->
-
-		<button onmouseover="increaseHeaderWidth()"><i style="" class="fa-solid fa-house"></i><span class="precision">Accueil</span></button>
-		<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-user"></i><span class="precision">Mon compte</span></button>
-		<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-paper-plane"></i><span class="precision">Envoie de message</span></button>
-		<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-gear"></i><span class="precision">Paramètre</span></button>
-		<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-right-from-bracket"></i></button>
-	</header>
-
-	<main>
-		coucouddddddddddddddddddddd
-	</main>
-
-
-	<script>
-	function increaseHeaderWidth() {
-		document.getElementsByTagName("header")[0].style.width = '300px'
-		Array.from(document.getElementsByClassName("precision")).forEach((span) => {
-			span.style.opacity = "1";
-		})
-	}
-	function decreaseHeaderWidth() {
-		document.getElementsByTagName("header")[0].style.width = '90px'
-		Array.from(document.getElementsByClassName("precision")).forEach((span) => {
-			span.style.opacity = "0";
-		})
-	}
-	</script>
-</body>
-</html>
-
+<header id="header" onmouseleave="decreaseHeaderWidth()">
+	<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-house"             ></i><span class="precision">Accueil</span></button>
+	<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-paper-plane"       ></i><span class="precision">Envoie de message</span></button>
+	<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-user"              ></i><span class="precision">Mon compte</span></button>
+	<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-gear"              ></i><span class="precision">Paramètre</span></button>
+	<button onmouseover="increaseHeaderWidth()"><i class="fa-solid fa-right-from-bracket"></i><span class="precision">Se déconnecter</span></button>
+</header>
+<script src="../js/header.js"></script>
 

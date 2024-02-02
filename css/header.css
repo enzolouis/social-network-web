@@ -6,6 +6,7 @@
 	--header-foreground-white-theme: #2e2E2E;
 }
 
+/* container */
 header {
 	position:fixed;
 	display:flex;
@@ -15,24 +16,21 @@ header {
 	overflow: scroll;
 	scrollbar-width: none;
 	background-color:var(--header-background);
-	/*border-right:5px solid rgba(255, 255, 255, 0.5); /* black */*/
     -webkit-transition: width 0.2s ease-in-out;
     -moz-transition: width 0.2s ease-in-out;
     -o-transition: width 0.2s ease-in-out;
     transition: width 0.2s ease-in-out;
 }
 
-
-
-header button {
+/* items in container */
+header > button {
 	flex: 0.12;
-	cursor: pointer;
-	background: #00000f;
 	display:block;
 	background:none;
 	border:none;
+	cursor: pointer;
 	opacity:0.5;
-	transition:all 0.1s linear;
+	transition:opacity 0.1s linear;
 	white-space: nowrap;
 
 	display: flex;
@@ -41,51 +39,42 @@ header button {
 	color: var(--header-foreground);
 }
 
-header button:nth-child(1) {
+/* transition on items hover */
+header > button:hover {
+	opacity: 1;
+}
+header > button:hover > svg {
+	transform: scale(1.1);
+}
+
+/* avoid the first item to stick to the top of the page */
+header > button:nth-child(1) {
 	margin-top: 10px;
 }
 
-header button:nth-child(5) {
+/* stick the last item at the bottom of the page */
+header > button:nth-child(5) {
+	transition: none;
 	margin-top: auto;
 	margin-bottom: 10px;
-	transition: none;
 }
-header button:hover {
-	opacity: 1;
-}
-
-span.precision {
-			display: inline-block;
-			opacity: 0; /* Texte initiallement invisible */
-			transition: opacity 0.2s ease; /* Transition lorsqu'il devient visible */
-			margin-left: 10px; /* Ajoutez un espace entre l'icône et le texte si nécessaire */
-		}
-
-header button:hover > svg {
-	transform: scale(1.1);
-	opacity: 1;
+/* red on hover for the disconnect button */
+header > button:nth-child(5):hover {
+	color: var(--red);
 }
 
-header button:nth-child(5):hover {
-	opacity: 1;
-}
-
-header svg {
+/* config size of icons */
+header > button > svg {
 	width: 30px;
 	padding: 0 25px;
 	font-size: 2.6em;
 	align-self: center;
 }
 
-header span {
+/* config precision span content opacity 0 at the beginning, to 1 thanks to JavaScript */
+header > button > span.precision {
+	display: inline-block;
 	opacity: 0;
+	transition: opacity 0.2s ease;
+	margin-left: 10px;
 }
-
-header button:nth-child(5):hover svg {
-	color: #e74c3c;
-}
-
-/*header > img {
-	width: 50px;
-}*/
-
