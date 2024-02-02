@@ -10,3 +10,7 @@ button {
 	border: none;
 }
 
+
+main {
+	margin-left: 90px; /* width of the footer */
+}
