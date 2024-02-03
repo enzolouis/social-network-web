@@ -20,6 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
+        if (preg_match('/[ ]/', $login) || preg_match('/[ ]/', $password)) {
+            header("Location: ../html/register.html");
+            exit();
+        }
+
         if (strlen($password) < 8 || !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
             header("Location: ../html/register.html");
             exit();
