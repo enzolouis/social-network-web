@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../css/login.css">
+</head>
+<html>
+    <body>
+        <form method="post" action="../php/register.php" class="form-container">
+            <label id="login">Login</label>
+            <input type="text" id="login" name="login" placeholder="login">
+
+            <label id="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="username">
+
+            <label id="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="password" min="8">
+
+            <input type="password" id="password-verify" name="password-verify" placeholder="password-verify" min="8">
+
+            <input type="submit" value="Register">
+            <p>Already have an account? <a href="../index.html">login now.</a></p>
+        </form>
+    </body>
+</html>
