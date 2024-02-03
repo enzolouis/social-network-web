@@ -103,8 +103,8 @@
     /**
      * Checks if a user with the login $id exists in the database.
      *
-     * @param  PDO $pdo
-     * @param  mixed $id
+     * @param  PDO $pdo The PDO database connection.
+     * @param  string $id
      * @return User
      */
     function getUserById(PDO $pdo, string $id) : User | null {
@@ -116,4 +116,20 @@
         }
 
         return null;
+    }
+    
+    /**
+     * Adds a user to the database
+     *
+     * @param  PDO $pdo The PDO database connection.
+     * @param  string $login
+     * @param  string $username
+     * @param  string $password
+     */
+    function add(PDO $pdo, string $login, string $username, string $password) {
+        $stmt = prepare($pdo, "INSERT INTO `user` (`login`, `username`, `password`) VALUES (?, ?, ?)");
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        execute($stmt, [$login, $username, $password]);
+        header("Location: ../index.html");
+        exit();
     }
