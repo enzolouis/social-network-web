@@ -76,6 +76,29 @@
         return false;
     }
 
+    /**
+     * Check if the current session is valid by verifying its existence in the database.
+     *
+     * @param PDO $pdo The PDO database connection.
+     * @return bool Returns true if the session is valid; otherwise, returns false.
+     */
+    function isSessionValid(PDO $pdo): bool {
+        session_start();
+
+        if (isset($_SESSION['login'])) {
+            $login = $_SESSION['login'];
+
+            $user = getUserById($pdo, $login);
+
+            if ($user) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     
     /**
      * Checks if a user with the login $id exists in the database.
