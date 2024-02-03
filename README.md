@@ -1,4 +1,4 @@
-# Project Name
+# social-network-web
 
 ## Description
 
