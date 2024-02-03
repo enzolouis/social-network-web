@@ -127,9 +127,10 @@
      * @param  string $password
      */
     function add(PDO $pdo, string $login, string $username, string $password) {
-        $stmt = prepare($pdo, "INSERT INTO `user` (`login`, `username`, `password`) VALUES (?, ?, ?)");
+        $stmt = prepare($pdo, "INSERT INTO `user` (`login`, `username`, `password`, `description`) VALUES (?, ?, ?, ?)");
         $password = password_hash($password, PASSWORD_DEFAULT);
-        execute($stmt, [$login, $username, $password]);
+        $desc = "No informations given.";
+        execute($stmt, [$login, $username, $password, $desc]);
         header("Location: ../index.html");
         exit();
     }
