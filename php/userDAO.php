@@ -53,6 +53,29 @@
     
         return false;
     }
+
+    /**
+     * Start a session for the specified user login.
+     *
+     * @param PDO $pdo The PDO database connection.
+     * @param mixed $login The login identifier for the user.
+     * @return bool Returns true if the session is started successfully; otherwise, returns false.
+     */
+    function startSessionForUser(PDO $pdo, $login): bool {
+        $user = getUserById($pdo, $login);
+
+        if ($user) {
+            session_start();
+
+            $_SESSION['login'] = $user->getLogin();
+            $_SESSION['username'] = $user->getUsername();
+
+            return true;
+        }
+
+        return false;
+    }
+
     
     /**
      * Checks if a user with the login $id exists in the database.
