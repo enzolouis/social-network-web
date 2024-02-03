@@ -1,10 +1,10 @@
 @import "reset.css";
 
-html {
+html, body {
     height: 100%;
 }
 
-body {
+main {
     height: 100%;
     width: 85%;
     padding: 15px;
@@ -19,20 +19,20 @@ body {
 #discussions {
     height: 100%;
     flex: 25%;
-    margin-right: 10px;
 
     background-color: darkgray;
+    border-radius: 10px;
 }
 
 
 /* Chat */
 #chat {
     height: 100%;
-    margin: auto;
+    margin: 0 10px;
 
     display: flex;
     flex-direction: column;
-    flex: 75%;
+    flex: 65%;
 }
 
 
@@ -43,6 +43,8 @@ body {
     flex: 15%;
 
     background-color: gray;
+    border-top-left-radius:  10px;
+    border-top-right-radius: 10px;
 
     padding: 15px;
     align-items: center;
@@ -79,10 +81,12 @@ body {
 
 .msg {
     display: inline-flex;
+    flex-direction: column;
 
     margin:  5px;
-    padding: 15px;
+    padding: 5px;
 
+    max-width: 75%;
     border-radius: 5px;
 }
 
@@ -96,10 +100,27 @@ body {
     background-color: lightgoldenrodyellow;
 }
 
+.msg-text {
+    text-align: justify;
+    padding: 10px;
+}
+
+.msg-time {
+    font-size: xx-small;
+    margin: 4px 10px 2px;
+}
+
+#user_me .msg-time {
+    text-align: right;
+}
+
 
 /* Chat message input */
 #chat-message {
     background-color: gray;
+    border-bottom-left-radius:  10px;
+    border-bottom-right-radius: 10px;
+    
     flex: 10%;
 
     padding: 25px;
@@ -130,4 +151,14 @@ body {
 
 #chat-message-text:focus {
     outline: none;
+}
+
+
+/* Emotes */
+#emotes {
+    height: 100%;
+    flex: 10%;
+
+    background-color: darkgray;
+    border-radius: 10px;
 }
