@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
-        add($pdo, $login, $username, $password);
+        addUser($pdo, $login, $username, $password);
     }
 
     header("Location: ../html/register.html");

@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pdo = createConnection();
 
     if (isPassValid($pdo, $login, $password)) {
-        if(startSessionForUser($pdo, $login)) {
+        if (startSessionForUser($pdo, $login)) {
             header("Location: chat.php");
             exit();
         }

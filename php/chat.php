@@ -1,6 +1,9 @@
 <?php 
     require("chatDisplay.php");
     require("functions.php");
+    session_start();
+    $me = $_SESSION["user"];
+    $other = new User('xouxou', 'Maxence Maury-Balit', 'xxx', 'Wise mystical tree enjoyer');
 
     $pdo = createConnection();
 ?>
@@ -16,6 +19,7 @@
 
             <div id = "discussions">
                 <p>Discussions</p>
+                <?php echo showChats($pdo, $me); ?>
             </div>
 
             <!-- W in the shaaat -->
@@ -25,7 +29,7 @@
                 <div id = "chat-header">
                     <img id = "chat-header-pp" src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
                     <div id = "chat-header-infos">
-                        <?php echo showHeader($pdo, "Nautilus"); ?>
+                        <?php echo showHeader($pdo, $other); ?>
                     </div>
                     
                 </div>
@@ -33,8 +37,7 @@
                 <!-- Chat box -->
                 <div id = "chat-box">
                     <?php 
-                        echo showMessages($pdo, "xouxou", "Nautilus");
-                        echo showMessages($pdo, "Nautilus", "xouxou");
+                        echo showMessages($pdo, $_SESSION["user"], $other);
                     ?>
                 </div>
 

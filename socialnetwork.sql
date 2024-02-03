@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `message` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `sender` varchar(50) NOT NULL,
   `receiver` varchar(50) NOT NULL,
   `sentDate` date NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `message` (
 -- Déchargement des données de la table `message`
 --
 
-INSERT INTO `message` (`id`, `sender`, `receiver`, `sentDate`, `sentHour`, `content`, `liked`) VALUES
+INSERT INTO `message` (`sender`, `receiver`, `sentDate`, `sentHour`, `content`, `liked`) VALUES
 ('xouxou', 'Nautilus', '2024-02-02', '17:20:37', 'Tu décryptes ?', 0),
 ('Nautilus', 'xouxou', '2024-02-02', '17:22:04', 'Mdrr', 0),
 ('xouxou', 'Nautilus', '2024-02-02', '17:22:31', '?', 0),
@@ -60,7 +60,7 @@ INSERT INTO `message` (`id`, `sender`, `receiver`, `sentDate`, `sentHour`, `cont
 CREATE TABLE `user` (
   `login` varchar(50) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `password` varchar(200) NOT NULL,
   `description` varchar(400) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -69,11 +69,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`login`, `username`, `password`, `description`) VALUES
-('xouxou', 'Maxence Maury-Balit', 'xxx', 'Wise mystical tree enjoyer'),
-('Nautilus', 'Zoubairov Ibrahim', 'yyy', 'NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOON'),
+('xouxou', 'Maxence Maury-Balit', '$2y$10$rywwfYzodOnEaCtervdoneG7H8ny3PpS0yaij6xxGPIc6M4QSVjUC', 'Wise mystical tree enjoyer'),
+('Nautilus', 'Zoubairov Ibrahim', '$2y$10$2f1gUoTlar/foCtSsyonmex4fekOJ03YtnlkbInnBDw4xp4oLE8vq', 'NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOON');
+/*
 ('ember', 'Loup & Enzo', 'nzo', 'C\'est fondamental'),
 ('pgwk', 'Pempem', 'zzz', 'simple and clean (ray of hope mix)'),
-('Matic', 'Willy Will', 'dz', 'Je suis ne*rophobe');
+('Matic', 'Willy Will', 'dz', 'Je suis ne*rophobe');*/
 
 --
 -- Index pour la table `user`

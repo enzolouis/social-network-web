@@ -66,10 +66,7 @@
 
         if ($user) {
             session_start();
-
-            $_SESSION['login'] = $user->getLogin();
-            $_SESSION['username'] = $user->getUsername();
-
+            $_SESSION['user'] = $user;
             return true;
         }
 
@@ -101,7 +98,7 @@
 
     
     /**
-     * Checks if a user with the login $id exists in the database.
+     * Returns the user asociated to the login $id if found, null else.
      *
      * @param  PDO $pdo The PDO database connection.
      * @param  string $id
@@ -126,11 +123,22 @@
      * @param  string $username
      * @param  string $password
      */
-    function add(PDO $pdo, string $login, string $username, string $password) {
+    function addUser(PDO $pdo, string $login, string $username, string $password) {
         $stmt = prepare($pdo, "INSERT INTO `user` (`login`, `username`, `password`, `description`) VALUES (?, ?, ?, ?)");
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $desc = "No informations given.";
+        $desc = "";
         execute($stmt, [$login, $username, $password, $desc]);
         header("Location: ../index.html");
         exit();
+    }
+
+    function getContactedUsers(PDO $pdo, User $user) : array | null {
+        $stmt = prepare($pdo, "SELECT DISTINCT user.* FROM user, message WHERE user.login = message.receiver AND message.sender = ?");
+        execute($stmt, [$user->getLogin()]);
+        
+        $users = array();
+        while ($contactedUser = $stmt->fetch()) {
+            $users[] = new User($contactedUser["login"], $contactedUser["username"], "Nothing to see here :)", $contactedUser["description"]);
+        }
+        return count($users) > 0 ? $users : null;
     }
