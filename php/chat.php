@@ -13,7 +13,7 @@
     <head>
         <link rel = "stylesheet" href = "../css/chat.css">
     </head>    
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <body>
         <main>
 
@@ -36,9 +36,8 @@
 
                 <!-- Chat box -->
                 <div id = "chat-box">
-                    <?php 
-                        echo showMessages($pdo, $_SESSION["user"], $other);
-                    ?>
+                    <img src="../images/loading.gif" id="loading-gif" style="display: none;" width="200px">
+                    <?php echo showMessages($pdo, $_SESSION["user"], $other); ?>
                 </div>
 
                 <!-- Message input -->
@@ -63,4 +62,6 @@
         chat.scrollTop = chat.scrollHeight;
     </script>
 
+    
+    <script src="../js/chat.js"></script>
 </html> 

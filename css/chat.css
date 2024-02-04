@@ -36,6 +36,7 @@ main {
     height: 60px;
     margin: 4px 10px;
 
+    position: relative;
     overflow: hidden;
     color: white;
     background-color: var(--dark-gray);
@@ -60,6 +61,7 @@ main {
 }
 
 .contacted-user-pfp {
+    pointer-events: none;
     width: 40px;
     height: 40px;
     margin-top: 10px;

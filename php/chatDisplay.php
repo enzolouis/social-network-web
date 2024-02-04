@@ -30,13 +30,13 @@
         
         if ($users) {
             foreach ($users as $contactedUser) {
-                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'">
+                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' . htmlspecialchars($user->getLogin()) . '\', this.id)">
                                 <div class = "contacted-user-pfp-container">
                                     <img class = "contacted-user-pfp">
                                     <div class = "contacted-user-status"></div>
                                 </div>
                                 <div class = "contacted-user-infos">
-                                    <label class = "contacted-user-name">'.$contactedUser->getUsername().'</label>
+                                    <p class = "contacted-user-name">'.$contactedUser->getUsername().'</p>
                                     <p class = "contacted-user-description">'.$contactedUser->getDescription().'</p>
                                 </div>
                             </div>';
