@@ -29,6 +29,36 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
+}
+
+.account-created {
+    text-align: center;
+    color: rgb(41, 168, 253);
+    padding-left: 40px;
+    height: 55px;
+    width: 100vw;
+    border-top: 2px solid rgb(41, 128, 185);
+    border-bottom: 2px solid rgb(41, 128, 185);
+    background-color: rgba(41, 128, 185, 0.25);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: popupLeave 1.5s ease-in-out forwards;
+    animation-delay: 3s;
+}
+
+@keyframes popupLeave {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-56px);
+    }
 }
 
 .form-container {
@@ -117,10 +147,10 @@ input[type="submit"] {
     background-color: var(--red);
 }
 
-.form-register #secure-password {
+.secure-password-and-bad-password {
     color: var(--red);
     margin-top: 3px;
-    margin-bottom: 15px; /* same as input selector */
+    margin-bottom: 15px;
 }
 
 .container {
