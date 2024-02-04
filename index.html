@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <head>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 <html>
     <body>
-        <form method="post" action="php/login.php" class="form-container">
-            <label id="login">Login</label>
-            <input type="text" class="login" id="login" name="login" placeholder="login" required>
+        <form method="post" action="php/login.php" class="form-container form-login">
+            <label for="login">Login</label>
+            <input type="text" class="login" id="login" name="login" placeholder="edgeur12" required>
 
-            <label id="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="password" min="8" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="NX:b7!LrPg@t2X9" min="8" required>
 
             <input type="submit" value="Login">
-            <p>Don't have an account? <a href="html/register.html">register now.</a></p>
+
+            <div class="separator"></div>
+            <p class="already-account">Don't have an account? <a href="html/register.html">Register now</a></p>
         </form>
         <script src="js/functions.js"></script>
     </body>

@@ -1,8 +1,29 @@
+
+:root {
+    --login-page-background: #2e2E2E;
+    --login-foreground: #dddddd;
+
+    --login-background: #212121;
+
+    --login-input-and-separator-background: rgb(44, 47, 51);
+    --login-input-background-hover: rgba(44, 47, 51, 0.8);
+
+    --login-background-white-theme: #eeeeee;
+    --login-foreground-white-theme: #2e2E2E;
+
+    --login-green: rgb(39, 174, 96);
+    --login-green-hover: rgba(39, 174, 96, 0.8);
+
+    --register-blue: rgb(41, 128, 185);
+    --register-blue-hover: rgba(41, 128, 185, 0.8);
+}
+
 /* styles.css */
 
+
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: var(--login-page-background);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -11,23 +32,95 @@ body {
 }
 
 .form-container {
-    width: 300px;
+    border-top-width: 7px;
+    border-top-style: solid;
+    border-top: 7px solid var(--login-green);
+    width: 340px;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: var(--login-background);
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.form-register {
+    border-top-color: var(--register-blue);
+}
+
+.form-login {
+    border-top-color: var(--login-green);
+}
+
+
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    color: #aaaaaa;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 input {
+    border: none;
+    outline: none;
+    border-radius: 3px;
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    box-sizing: border-box;
+
+    background-color: var(--login-input-and-separator-background);
+    color: #dddddd;
+}
+
+input:hover {
+    background-color: var(--login-input-background-hover);
+}
+
+input:focus::placeholder {
+    opacity: 0;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    transition: all 0.1s linear;
+}
+
+.form-register input[type="submit"] {
+    background-color: var(--register-blue);
+}
+
+.form-register input[type="submit"]:hover {
+    background-color: var(--register-blue-hover);
+}
+
+.form-login input[type="submit"] {
+    background-color: var(--login-green);
+}
+
+.form-login input[type="submit"]:hover {
+    background-color: var(--login-green-hover);
+}
+
+.form-register #password {
+    margin: 0;
+    position: relative;
+}
+
+.form-register #password::after {
+    content: "";
+    position: absolute;
+    width: 20%;
+    height: 3px;
+    
+    bottom: 0;
+    left: 0;
+    color: blue;
+    background-color: var(--red);
+}
+
+.form-register #secure-password {
+    color: var(--red);
+    margin-top: 3px;
+    margin-bottom: 15px; /* same as input selector */
 }
 
 .container {
@@ -37,8 +130,22 @@ input {
 a {
     text-decoration: none;
     color: #3498db;
+    font-weight: 600;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+
+
+.already-account {
+    font-size: 12px;
+    margin: 0;
+    color:  #b5bac1;
+}
+
+.separator {
+    border-top: 3px solid var(--login-input-and-separator-background);
+    margin: 8% 5% 3% 5%;
 }
