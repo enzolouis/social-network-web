@@ -11,12 +11,13 @@
     function showDiscussionsChats(PDO $pdo, string $user) : string {
         $users = getContactedUsers($pdo, $user);
         $result = "";
-        
+
         if ($users) {
             foreach ($users as $contactedUser) {
-                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' .$user. '\', this.id)">
+                $imageURL = empty($contactedUser->getProfilePicture()) ? '' : 'src = "'. $contactedUser->getProfilePicture() .'"';
+                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' .$user. '\', this.id); loadHeader(this.id);">
                                 <div class = "contacted-user-pfp-container">
-                                    <img class = "contacted-user-pfp">
+                                    <img class = "contacted-user-pfp" '. $imageURL .'>
                                     <div class = "contacted-user-status"></div>
                                 </div>
                                 <div class = "contacted-user-infos">
@@ -32,9 +33,9 @@
     // 
     function showChatHeader(PDO $pdo, string $other) : string {
         $user = getUserById($pdo, $other);
-
+        $imageURL = empty($user->getProfilePicture()) ? '' : 'src = "'. $user->getProfilePicture() .'"';
         return '<div class = "contacted-user-pfp-container">
-                    <img class = "contacted-user-pfp">
+                    <img class = "contacted-user-pfp" '. $imageURL .'>
                     <div class = "contacted-user-status"></div>
                 </div>
                 <div class = "contacted-user-infos">

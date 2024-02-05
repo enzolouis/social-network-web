@@ -1,4 +1,5 @@
 @import "reset.css";
+@import "style.css";
 
 :root {
     --background: rgb(21, 21, 21);
@@ -9,7 +10,6 @@
 html, body {
     height: 100%;
     background-color: var(--background);
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 main {
@@ -17,7 +17,6 @@ main {
     width: 85%;
     padding: 15px;
     margin: auto;
-
     display: flex;
     flex-direction: row;
 }
