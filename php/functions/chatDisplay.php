@@ -54,8 +54,8 @@
             $previousSentHour = $messages[0]->getSentHour();
             foreach ($messages as $message) {
                 if (getTimeDifferenceInHours($message->getSentDate(), $message->getSentHour(), $previousSentDate, $previousSentHour) > 10) {
-                    $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('m') . ' ' . $message->getSentHour();
-                    $result .= '<br><div class = "date-separator" style="color: white;">'. $messageDate .'<hr></div>';
+                    $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('m') . ' - ' . substr($message->getSentHour(), 0, 5);
+                    $result .= '<div class = "date-separator">'. $messageDate .'</div>';
                 }
                 $id = ($message->getSender() == $self) ? "user_me" : "user_other";
                 $result .= '<div class = "msg" id = "'.$id.'">
