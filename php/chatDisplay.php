@@ -2,29 +2,13 @@
     require("messageDAO.php");
     require("userDAO.php");
 
-    function showHeader(PDO $pdo, User $other) : string {
-        return '<h1>'.$other->getUsername().'</h1>
-                <p>'.$other->getDescription().'</p>';
+    // 
+    function showDiscussionsHeader(PDO $pdo, string $user) : string {
+        return "";
     }
 
-    function showMessages(PDO $pdo, string $self, string $other) : string {
-        $messages = getMessagesBetweenPeople($pdo, $self, $other);
-        $result = "";
-        
-        if ($messages) {
-            foreach ($messages as $message) {
-                $id = ($message->getSender() == $self) ? "user_me" : "user_other";
-                $result .= '<div class = "msg" id = "'.$id.'">
-                                <p class = "msg-text">'.$message->getContent().'</p>
-                                <p class = "msg-time">'.$message->getSentHour().'</p>
-                            </div>';
-            }
-        }
-        
-        return $result;
-    }
-
-    function showChats(PDO $pdo, string $user) : string {
+    // 
+    function showDiscussionsChats(PDO $pdo, string $user) : string {
         $users = getContactedUsers($pdo, $user);
         $result = "";
         
@@ -42,6 +26,38 @@
                             </div>';
             }
         }
+        return $result;
+    }
+
+    // 
+    function showChatHeader(PDO $pdo, string $other) : string {
+        $user = getUserById($pdo, $other);
+
+        return '<div class = "contacted-user-pfp-container">
+                    <img class = "contacted-user-pfp">
+                    <div class = "contacted-user-status"></div>
+                </div>
+                <div class = "contacted-user-infos">
+                    <p class = "contacted-user-name">'.$user->getUsername().'</p>
+                    <p class = "contacted-user-description">'.$user->getDescription().'</p>
+                </div>';
+    }
+
+    // 
+    function showChatMessages(PDO $pdo, string $self, string $other) : string {
+        $messages = getMessagesBetweenPeople($pdo, $self, $other);
+        $result = "";
+        
+        if ($messages) {
+            foreach ($messages as $message) {
+                $id = ($message->getSender() == $self) ? "user_me" : "user_other";
+
+                $result .= '<div class = "msg" id = "'.$id.'">
+                                <p class = "msg-text">'.$message->getContent().'</p>
+                            </div>';
+            }
+        }
+        
         return $result;
     }
 
