@@ -1,5 +1,5 @@
 <?php
-    require("functions.php");
+    require("databaseFunctions.php");
     require("chatDisplay.php");
     $pdo = createConnection();
 

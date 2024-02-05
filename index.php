@@ -15,7 +15,7 @@ $wrongPass = isset($_GET['passlogin']) ? $_GET['passlogin'] : null;
             <i></i>
             <p>Your account has been created.</p>
         </div>
-        <form method="post" action="php/login.php" class="form-container form-login">
+        <form method="post" action="php/functions/login.php" class="form-container form-login">
             <label for="login">Login</label>
             <input type="text" class="login" id="login" name="login" placeholder="edgeur12" required>
 

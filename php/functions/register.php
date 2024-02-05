@@ -1,6 +1,6 @@
 <?php
 
-require("functions.php");
+require("databaseFunctions.php");
 require("userDAO.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
