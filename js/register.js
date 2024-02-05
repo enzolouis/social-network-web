@@ -6,7 +6,9 @@ let secureNumber = false;
 
 document.getElementById("password").addEventListener("input", function(event) {
     let content = document.getElementById("password").value;
-    document.getElementById("password").value = content.replace(' ', '');
+    document.getElementById("password").value = document.getElementById("password").value.replace(' ', '');
+    content = document.getElementById("password").value;
+    
 
     let formatSpecial = /^[a-zA-Z0-9]*$/
     let formatCapital = /[A-Z]/
@@ -65,17 +67,15 @@ document.getElementById("password-verify").addEventListener("input", function() 
     passwordVerifyEventListener()
 });
 
-/*
-document.getElementById("login").addEventListener('input', function() {
-    let content = document.getElementById("login").value;
-    document.getElementById("login").value = content.replace(' ', '');
+document.getElementById("username").addEventListener('input', function(event) {
+    document.getElementById("username").value = document.getElementById("username").value.trimStart().replace(/[^a-zA-Z0-9 ]| (?= )/g, '');
 });
-*/
 
 function passwordVerifyEventListener() {
     let contentPassword = document.getElementById("password").value;
     let contentPasswordVerify = document.getElementById("password-verify").value;
     document.getElementById("password-verify").value = contentPasswordVerify.replace(' ', '');
+    contentPasswordVerify = document.getElementById("password-verify").value;
 
     let style = document.getElementById("passwordVerifyDiv").style;
 
