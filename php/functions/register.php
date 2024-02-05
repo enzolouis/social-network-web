@@ -16,12 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!$user) {
         if ($password !== $passwordverify) {
-            header("Location: ../html/register.html");
+            header("Location: ../pages/register.html");
             exit();
         }
 
         if (preg_match('/[ ]/', $login) || preg_match('/[ ]/', $password)) {
-            header("Location: ../html/register.html");
+            header("Location: ../pages/register.html");
             exit();
         }
 
@@ -31,13 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             !preg_match('/[A-Z]/', $password) ||
             !preg_match('/[0-9]/', $password)
         ) {
-            header("Location: ../html/register.html");
+            header("Location: ../pages/register.html");
             exit();
         }
 
         addUser($pdo, $login, $username, $password);
     }
 
-    header("Location: ../html/register.html");
+    header("Location: ../pages/register.html");
     exit();
 }

@@ -15,18 +15,18 @@ $wrongPass = isset($_GET['passlogin']) ? $_GET['passlogin'] : null;
             <i></i>
             <p>Your account has been created.</p>
         </div>
-        <form method="post" action="php/functions/login.php" class="form-container form-login">
+        <form method="post" action="php/functions/login.php"  class="form-container form-login">
             <label for="login">Login</label>
             <input type="text" class="login" id="login" name="login" placeholder="edgeur12" required>
 
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="NX:b7!LrPg@t2X9" min="8" required>
+            <input type="password" id="password" name="password" placeholder="NX:b7!LrPg@t2X9" required>
             <label class="secure-password-and-bad-password" <?php if($wrongPass === null) { echo 'style="display: none;"'; }?> >Incorrect login or password.</label>
 
             <input type="submit" value="Login">
 
             <div class="separator"></div>
-            <p class="already-account">Don't have an account? <a href="html/register.html">Register now</a></p>
+            <p class="already-account">Don't have an account? <a href="php/pages/register.html">Register now</a></p>
         </form>
         <script src="js/functions.js"></script>
         <script src="js/login.js"></script>

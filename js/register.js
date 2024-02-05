@@ -2,6 +2,8 @@ let secure8letters = false;
 let secureCapital = false;
 let secureSpecial = false;
 let secureNumber = false;
+var isValidPassword = false;
+var isValidPasswordVerify = false;
 
 
 document.getElementById("password").addEventListener("input", function(event) {
@@ -32,8 +34,10 @@ document.getElementById("password").addEventListener("input", function(event) {
     } else {
         sumSecure = secure8letters * 20 + 20 + secureCapital * 20 + secureSpecial * 20 + secureNumber * 20;
         if (sumSecure == 100) {
+            isValidPassword = true;
             document.getElementById("secure-password-details").style.height = "0";
         } else {
+            isValidPassword = false;
             document.getElementById("secure-password-details").style.height = "40px";            
         }
     }
@@ -88,9 +92,23 @@ function passwordVerifyEventListener() {
     }
 
     if (contentPassword == contentPasswordVerify) {
+        isValidPasswordVerify = true;
         style.setProperty('--register-bar-password-verify-color', 'rgb(46, 204, 113)');
         document.getElementById("secure-password-verify-details").style.height = "0";
     } else {
+        isValidPasswordVerify = false;
         style.setProperty('--register-bar-password-verify-color', 'rgb(231, 76, 60)');
     }
-}
+}   
+
+document.getElementById("login").addEventListener('input', function(event) {
+    document.getElementById("login").value = document.getElementById("login").value.replace(/[^a-zA-Z0-9]/g, '');
+});
+
+document.getElementById("form-reg").addEventListener("submit", function(e) {
+     if (isValidPassword && isValidPasswordVerify) {
+        return true;
+    }
+    e.preventDefault();
+})
+
