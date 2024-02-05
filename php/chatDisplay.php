@@ -7,13 +7,13 @@
                 <p>'.$other->getDescription().'</p>';
     }
 
-    function showMessages(PDO $pdo, User $self, User $other) : string {
+    function showMessages(PDO $pdo, string $self, string $other) : string {
         $messages = getMessagesBetweenPeople($pdo, $self, $other);
         $result = "";
         
         if ($messages) {
             foreach ($messages as $message) {
-                $id = ($message->getSender() == $self->getLogin()) ? "user_me" : "user_other";
+                $id = ($message->getSender() == $self) ? "user_me" : "user_other";
                 $result .= '<div class = "msg" id = "'.$id.'">
                                 <p class = "msg-text">'.$message->getContent().'</p>
                                 <p class = "msg-time">'.$message->getSentHour().'</p>
@@ -24,13 +24,13 @@
         return $result;
     }
 
-    function showChats(PDO $pdo, User $user) : string {
+    function showChats(PDO $pdo, string $user) : string {
         $users = getContactedUsers($pdo, $user);
         $result = "";
         
         if ($users) {
             foreach ($users as $contactedUser) {
-                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' . htmlspecialchars($user->getLogin()) . '\', this.id)">
+                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' .$user. '\', this.id)">
                                 <div class = "contacted-user-pfp-container">
                                     <img class = "contacted-user-pfp">
                                     <div class = "contacted-user-status"></div>

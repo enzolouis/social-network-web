@@ -19,7 +19,7 @@
 
             <div id = "discussions">
                 <p>Discussions</p>
-                <?php echo showChats($pdo, $me); ?>
+                <?php echo showChats($pdo, $me->getLogin()); ?>
             </div>
 
             <!-- W in the shaaat -->
@@ -37,7 +37,7 @@
                 <!-- Chat box -->
                 <div id = "chat-box">
                     <img src="../images/loading.gif" id="loading-gif" style="display: none;" width="200px">
-                    <?php echo showMessages($pdo, $_SESSION["user"], $other); ?>
+                    <?php echo showMessages($pdo, $me->getLogin(), $other->getLogin()); ?>
                 </div>
 
                 <!-- Message input -->

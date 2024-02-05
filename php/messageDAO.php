@@ -61,20 +61,20 @@
     }
 
     function addMessage(PDO $pdo,
-                        User $sender, 
-                        User $receiver, 
+                        string $sender, 
+                        string $receiver, 
                         string $sentDate,
                         string $sentHour,
                         string $content,
                         bool $liked) {
         $stmt = prepare($pdo, "INSERT INTO message (sender, receiver, sentDate, sentHour, content, liked) 
                                             VALUES (?, ?, ?, ?, ?, ?)");
-        execute($stmt, [$sender->getLogin(), $receiver->getLogin(), $sentDate, $sentHour, $content, $liked]);
+        execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked]);
     }
 
-    function getMessagesBetweenPeople(PDO $pdo, User $personOne, User $personTwo) : array | null {
+    function getMessagesBetweenPeople(PDO $pdo, string $personOne, string $personTwo) : array | null {
         $stmt = prepare($pdo, "SELECT * FROM message WHERE sender IN (:personOne, :personTwo) AND receiver IN (:personOne, :personTwo) ORDER BY sentDate ASC, sentHour ASC, id ASC");
-        execute($stmt, [":personOne" => $personOne->getLogin(), ":personTwo" => $personTwo->getLogin()]);
+        execute($stmt, [":personOne" => $personOne, ":personTwo" => $personTwo]);
 
         $messages = array();
         while ($message = $stmt->fetch()) {
@@ -82,5 +82,4 @@
         }
         return count($messages) > 0 ? $messages : null;
     }
-    
-?>
+  
