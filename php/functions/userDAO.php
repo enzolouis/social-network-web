@@ -76,16 +76,14 @@
     /**
      * Check if the current session is valid by verifying its existence in the database.
      *
-     * @param PDO $pdo The PDO database connection.
-     * @return bool Returns true if the session is valid; otherwise, returns false.
+     * @return User Returns the user for the current session.
      */
-    function isSessionValid(PDO $pdo): bool {
+    function isSessionValid(): bool {
         session_start();
 
-        if (isset($_SESSION['login'])) {
-            $login = $_SESSION['login'];
+        if (isset($_SESSION['user'])) {
 
-            $user = getUserById($pdo, $login);
+            $user = $_SESSION['user'];
 
             if ($user) {
                 return true;
@@ -94,8 +92,6 @@
 
         return false;
     }
-
-
     
     /**
      * Returns the user asociated to the login $id if found, null else.
@@ -141,4 +137,11 @@
             $users[] = new User($contactedUser["login"], $contactedUser["username"], "Nothing to see here :)", $contactedUser["description"]);
         }
         return count($users) > 0 ? $users : null;
+    }
+
+    function disconnect() {
+        session_destroy();
+        session_abort(); // Just in case, you never know
+        header("Location: ../index.php");
+        exit();
     }

@@ -1,23 +1,33 @@
 <?php 
-    require("../functions/chatDisplay.php");
-    require("../functions/databaseFunctions.php");
-    session_start();
-    $me = $_SESSION["user"];
+    require("chatDisplay.php");
+    require("functions.php");
+
+    $user = null;
+    if(isSessionValid()) {
+        $user = $_SESSION["user"];
+    } else {
+        disconnect();
+    }
+    $other = new User('xouxou', 'Maxence Maury-Balit', 'xxx', 'Wise mystical tree enjoyer');
+
     $pdo = createConnection();
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel = "stylesheet" href = "../../css/chat.css">
+        <link rel = "stylesheet" href = "../css/chat.css">
     </head>    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <body>
         <main>
 
             <div id = "discussions">
-                <p>Discussions</p>
-                <?php echo showChats($pdo, $me->getLogin()); ?>
+                <div id = "discussions-header">
+                    <h1>Chats</h1>
+                    <p>Test</p> 
+                </div>
+                    <?php echo showDiscussionsChats($pdo, $user->getLogin()); ?>
             </div>
 
             <!-- W in the shaaat -->
@@ -26,11 +36,13 @@
                 <!-- Chat header  -->
                 <div class = "contacted-user" id = "chat-header">
                     <img src="../images/loading.gif" class="loading-gif" style="display: none;" width="200px">
+                    <?php echo showChatHeader($pdo, $other->getLogin()); ?>
                 </div>
 
                 <!-- Chat box -->
                 <div id = "chat-box">
-                    <img src="../images/loading.gif" class="loading-gif" style="display: none;" width="200px">
+                    <img src="../images/loading.gif" id="loading-gif" style="display: none;" width="200px">
+                    <?php echo showChatMessages($pdo, $user->getLogin(), $other->getLogin()); ?>
                 </div>
 
                 <!-- Message input -->
@@ -42,19 +54,14 @@
                 </div>
             </div>
 
-            <div id = "emotes">
-                <p>Emotes</p>
-            </div>
-
         </main>
     </body>
 
-    <!-- Scroll down the chat -->
+    <script src="../js/chat.js"></script>
+
+    <!-- Scroll down the chat -->    
     <script>
         var chat = document.getElementById("chat-box");
         chat.scrollTop = chat.scrollHeight;
     </script>
-
-    
-    <script src="../../js/chat.js"></script>
 </html> 

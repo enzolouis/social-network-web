@@ -3,4 +3,4 @@
     require("chatDisplay.php");
     $pdo = createConnection();
 
-    echo showMessages($pdo, $_POST["user"], $_POST["otherUser"]);
+    echo showChatMessages($pdo, $_POST["user"], $_POST["otherUser"]);
