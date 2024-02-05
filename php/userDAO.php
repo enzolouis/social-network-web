@@ -133,8 +133,8 @@
     }
 
     function getContactedUsers(PDO $pdo, string $user) : array | null {
-        $stmt = prepare($pdo, "SELECT DISTINCT user.* FROM user, message WHERE user.login = message.receiver AND message.sender = ?");
-        execute($stmt, [$user]);
+        $stmt = prepare($pdo, "SELECT DISTINCT user.* FROM user, message WHERE ((message.receiver = :login AND message.sender = user.login) OR (message.sender = :login AND message.receiver = user.login)) AND user.login <> :login");
+        execute($stmt, [":login" => $user]);
         
         $users = array();
         while ($contactedUser = $stmt->fetch()) {
