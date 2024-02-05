@@ -1,6 +1,6 @@
 <?php 
-    require("chatDisplay.php");
-    require("functions.php");
+    require("../functions/chatDisplay.php");
+    require("../functions/databaseFunctions.php");
 
     $user = null;
     if(isSessionValid()) {
@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel = "stylesheet" href = "../css/chat.css">
+        <link rel = "stylesheet" href = "../../css/chat.css">
     </head>    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <body>
@@ -57,7 +57,7 @@
         </main>
     </body>
 
-    <script src="../js/chat.js"></script>
+    <script src="../../js/chat.js"></script>
 
     <!-- Scroll down the chat -->    
     <script>
