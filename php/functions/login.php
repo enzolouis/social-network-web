@@ -1,6 +1,6 @@
 <?php
 
-require("functions.php");
+require("databaseFunctions.php");
 require("userDAO.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,11 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isPassValid($pdo, $login, $password)) {
         if (startSessionForUser($pdo, $login)) {
-            header("Location: chat.php");
+            header("Location: ../pages/chat.php");
             exit();
         }
     } else {
-        header("Location: ../index.php?passlogin=false");
+        header("Location: ../../index.php?passlogin=false");
         exit();
     }
 }

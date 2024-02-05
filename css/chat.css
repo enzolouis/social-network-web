@@ -1,12 +1,14 @@
 @import "reset.css";
 
 :root {
-    --dark-gray: #333333;
-    --dark-gray-hover: #414040;
+    --background: rgb(21, 21, 21);
+    --dark-gray: rgb(33, 33, 33);
+    --gray: rgb(50, 50, 50);
 }
 
 html, body {
     height: 100%;
+    background-color: var(--background);
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -25,10 +27,35 @@ main {
 #discussions {
     max-width: 350px;
     height: 100%;
-    flex: 25%;
+    flex: 30%;
 
-    background-color: darkgray;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--gray);
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+#discussions-header {
+    padding: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+    
+    height: 10%;
+
+    border-top-left-radius: 7px;
+    background-color: var(--dark-gray);
+    color: white;
+    border-bottom: #727272 solid 1px;
+}
+
+#discussions-header > h1 {
+    font-size: 25px;
+}
+
+#discussions-header > p {
+    font-size: 16px;
 }
 
 .contacted-user {
@@ -46,13 +73,13 @@ main {
     transition: 0.2s ease-in-out;
 }
 
-.contacted-user:hover {
+.contacted-user:not(#chat-header):hover {
     cursor: pointer;
     background-color: var(--dark-gray-hover);
     transform: scale(1.02);
 }
 
-.contacted-user:hover .contacted-user-status {
+.contacted-user:not(#chat-header):hover .contacted-user-status {
     border-color: var(--dark-gray-hover);
 }
 
@@ -96,51 +123,34 @@ main {
 /* Chat */
 #chat {
     height: 100%;
-    margin: 0 10px;
+    margin: 0 5px;
 
     display: flex;
     flex-direction: column;
-    flex: 65%;
+    flex: 70%;
 }
 
 
 /* Chat header */
 #chat-header {
-    display: flex;
-    flex-direction: row;
-    flex: 15%;
+    width: 100% !important;
+    height: 10%;
 
-    background-color: gray;
-    border-top-left-radius:  10px;
-    border-top-right-radius: 10px;
+    margin: 0px !important;
+    padding: 10px 25px;
 
-    padding: 15px;
-    align-items: center;
-}
-
-#chat-header-pp {
-    margin: 5px;
-    margin-right: 15px;
-
-    display: block;
-    object-fit: contain;
-    width: 75px;
-    height: auto;
-
-    border-radius: 10px;
-}
-
-#chat-header-infos > h1 {
-    font-size: 25px;
+    border-radius: 0;
+    border-top-right-radius: 7px;
+    border-bottom: #727272 solid 1px;
 }
 
 
 /* Chat box */
 #chat-box {
-    background-color: gainsboro;
+    background-color: var(--gray);
     padding: 15px;
 
-    overflow: scroll;
+    overflow-y: scroll;
     
     flex: 75%;
     display: flex;
@@ -151,8 +161,7 @@ main {
     display: inline-flex;
     flex-direction: column;
 
-    margin:  5px;
-    padding: 5px;
+    margin: 1px;
 
     max-width: 75%;
     border-radius: 5px;
@@ -165,7 +174,7 @@ main {
 
 .msg#user_me {
     margin-left: auto;
-    background-color: lightgoldenrodyellow;
+    background-color: rgb(22, 160, 133);
 }
 
 .msg-text {
@@ -173,20 +182,14 @@ main {
     padding: 10px;
 }
 
-.msg-time {
-    font-size: xx-small;
-    margin: 4px 10px 2px;
-}
-
-#user_me .msg-time {
-    text-align: right;
+.msg-last {
+    height: 100px;
 }
 
 
 /* Chat message input */
 #chat-message {
-    background-color: gray;
-    border-bottom-left-radius:  10px;
+    background-color: var(--dark-gray);
     border-bottom-right-radius: 10px;
     
     flex: 10%;
@@ -219,14 +222,4 @@ main {
 
 #chat-message-text:focus {
     outline: none;
-}
-
-
-/* Emotes */
-#emotes {
-    height: 100%;
-    flex: 10%;
-
-    background-color: darkgray;
-    border-radius: 10px;
 }
