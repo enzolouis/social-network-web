@@ -11,12 +11,13 @@
     function showDiscussionsChats(PDO $pdo, string $user) : string {
         $users = getContactedUsers($pdo, $user);
         $result = "";
-        
+
         if ($users) {
             foreach ($users as $contactedUser) {
-                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' .$user. '\', this.id)">
+                $imageURL = empty($contactedUser->getProfilePicture()) ? '' : 'src = "'. $contactedUser->getProfilePicture() .'"';
+                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' .$user. '\', this.id); loadHeader(this.id);">
                                 <div class = "contacted-user-pfp-container">
-                                    <img class = "contacted-user-pfp">
+                                    <img class = "contacted-user-pfp" '. $imageURL .'>
                                     <div class = "contacted-user-status"></div>
                                 </div>
                                 <div class = "contacted-user-infos">
@@ -32,9 +33,9 @@
     // 
     function showChatHeader(PDO $pdo, string $other) : string {
         $user = getUserById($pdo, $other);
-
+        $imageURL = empty($user->getProfilePicture()) ? '' : 'src = "'. $user->getProfilePicture() .'"';
         return '<div class = "contacted-user-pfp-container">
-                    <img class = "contacted-user-pfp">
+                    <img class = "contacted-user-pfp" '. $imageURL .'>
                     <div class = "contacted-user-status"></div>
                 </div>
                 <div class = "contacted-user-infos">
@@ -53,8 +54,8 @@
             $previousSentHour = $messages[0]->getSentHour();
             foreach ($messages as $message) {
                 if (getTimeDifferenceInHours($message->getSentDate(), $message->getSentHour(), $previousSentDate, $previousSentHour) > 10) {
-                    $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('m') . ' ' . $message->getSentHour();
-                    $result .= '<br><div class = "date-separator" style="color: white;">'. $messageDate .'<hr></div>';
+                    $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('m') . ' - ' . substr($message->getSentHour(), 0, 5);
+                    $result .= '<div class = "date-separator">'. $messageDate .'</div>';
                 }
                 $id = ($message->getSender() == $self) ? "user_me" : "user_other";
                 $result .= '<div class = "msg" id = "'.$id.'">

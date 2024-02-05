@@ -36,13 +36,11 @@
                 <!-- Chat header  -->
                 <div class = "contacted-user" id = "chat-header">
                     <img src="../images/loading.gif" class="loading-gif" style="display: none;" width="200px">
-                    <?php echo showChatHeader($pdo, $other->getLogin()); ?>
                 </div>
 
                 <!-- Chat box -->
                 <div id = "chat-box">
                     <img src="../images/loading.gif" id="loading-gif" style="display: none;" width="200px">
-                    <?php echo showChatMessages($pdo, $user->getLogin(), $other->getLogin()); ?>
                 </div>
 
                 <!-- Message input -->

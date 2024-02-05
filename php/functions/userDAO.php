@@ -6,12 +6,14 @@
         private $_username;
         private $_password;
         private $_description;
+        private $_profilePicture;
         
-        function __construct($login, $username, $password, $description){
+        function __construct($login, $username, $password, $description, $profilePicture = null){
             $this->_login = $login;
             $this->_username = $username;
             $this->_password = $password;
             $this->_description = $description;
+            $this->_profilePicture = $profilePicture;
         }
 
         public function getLogin(){
@@ -28,6 +30,10 @@
 
         public function getDescription(){
             return $this->_description;
+        }
+
+        public function getProfilePicture(){
+            return $this->_profilePicture;
         }
 
         public function __toString(){
@@ -105,9 +111,8 @@
         execute($stmt, [$id]);
 
         if ($user = $stmt->fetch()) {
-            return new User($user["login"], $user["username"], $user["password"], $user["description"]);
+            return new User($user["login"], $user["username"], $user["password"], $user["description"], $user["profilePicture"]);
         }
-
         return null;
     }
     
@@ -120,10 +125,9 @@
      * @param  string $password
      */
     function addUser(PDO $pdo, string $login, string $username, string $password) {
-        $stmt = prepare($pdo, "INSERT INTO `user` (`login`, `username`, `password`, `description`) VALUES (?, ?, ?, ?)");
+        $stmt = prepare($pdo, "INSERT INTO user (login, username, password) VALUES (?, ?, ?, ?, ?)");
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $desc = "";
-        execute($stmt, [$login, $username, $password, $desc]);
+        execute($stmt, [$login, $username, $password]);
         header("Location: ../index.php?created=true");
         exit();
     }
@@ -134,7 +138,7 @@
         
         $users = array();
         while ($contactedUser = $stmt->fetch()) {
-            $users[] = new User($contactedUser["login"], $contactedUser["username"], "Nothing to see here :)", $contactedUser["description"]);
+            $users[] = new User($contactedUser["login"], $contactedUser["username"], "Nothing to see here :)", $contactedUser["description"], $contactedUser["profilePicture"]);
         }
         return count($users) > 0 ? $users : null;
     }
