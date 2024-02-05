@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import "reset.css";
+@import "header.css";
+
 :root {
 	--primary-background: #eeeeee;
 	--primary-foreground: black;
@@ -6,6 +10,10 @@
 	--secondary-foreground: black;
 
 	--red: #e74c3c;
+}
+
+* {
+    font-family: "Montserrat", sans-serif;
 }
 
 button {

@@ -7,5 +7,16 @@ function limitLetters() {
         this.value = emptyValue;
       });
     }
-  }
-  limitLetters();
+}
+limitLetters();
+
+function deleteGetURL() {
+    var url = window.location.href;
+
+    if (url.indexOf('passlogin=') !== -1) {
+        var newURL = url.replace(/([?&])passlogin=[^&]+(&|$)/, '$1');
+        
+        window.history.replaceState({}, document.title, newURL);
+    }
+}
+deleteGetURL();

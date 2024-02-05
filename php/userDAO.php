@@ -128,7 +128,7 @@
         $password = password_hash($password, PASSWORD_DEFAULT);
         $desc = "";
         execute($stmt, [$login, $username, $password, $desc]);
-        header("Location: ../index.html");
+        header("Location: ../index.php?created=true");
         exit();
     }
 

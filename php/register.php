@@ -25,7 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
-        if (strlen($password) < 8 || !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+        if (
+            strlen($password) < 8 ||
+            !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password) ||
+            !preg_match('/[A-Z]/', $password) ||
+            !preg_match('/[0-9]/', $password)
+        ) {
             header("Location: ../html/register.html");
             exit();
         }
@@ -34,4 +39,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     header("Location: ../html/register.html");
+    exit();
 }
