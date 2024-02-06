@@ -5,9 +5,9 @@ $wrongPass = isset($_GET['passlogin']) ? $_GET['passlogin'] : null;
 
 <!DOCTYPE html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/login.css">
+    <script defer src="https://use.fontawesome.com/releases/v6.4.2/js/all.js"></script>
 </head>
 <html>
     <body>
@@ -20,7 +20,10 @@ $wrongPass = isset($_GET['passlogin']) ? $_GET['passlogin'] : null;
             <input type="text" class="login" id="login" name="login" placeholder="edgeur12" required>
 
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="NX:b7!LrPg@t2X9" required>
+            <div class="passwordDivs" id="passwordDiv">
+                <input type="password" id="password" name="password" placeholder="NX:b7!LrPg@t2X9" required>
+                <button type="button" class="hide-password" id="hide-password"><i class="fa-solid fa-eye"></i></button>
+            </div>
             <label class="secure-password-and-bad-password" <?php if($wrongPass === null) { echo 'style="display: none;"'; }?> >Incorrect login or password.</label>
 
             <input type="submit" value="Login">
