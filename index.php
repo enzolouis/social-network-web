@@ -28,8 +28,6 @@ $wrongPass = isset($_GET['passlogin']) ? $_GET['passlogin'] : null;
             <div class="separator"></div>
             <p class="already-account">Don't have an account? <a href="php/pages/register.html">Register now</a></p>
         </form>
-        <script src="js/functions.js"></script>
         <script src="js/login.js"></script>
-        <script src="js/loginAndRegister.js"></script>
     </body>
 </html>

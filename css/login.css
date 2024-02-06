@@ -113,12 +113,14 @@ input[type="submit"]:hover {
 }
 
 .form-register #password,
-.form-register #password-verify {
+.form-register #password-verify,
+.form-register #login {
     margin: 0;
 }
 
 .form-register #passwordDiv,
-.form-register #passwordVerifyDiv {
+.form-register #passwordVerifyDiv,
+.form-register #passwordLoginDiv {
     margin: 0;
     position: relative;
 }
@@ -154,7 +156,8 @@ input[type="submit"]:hover {
 }
 
 .form-register #secure-password-details,
-.form-register #secure-password-verify-details {
+.form-register #secure-password-verify-details,
+.form-register #secure-login-details {
     margin: 0;
     overflow: hidden;
     height:0px;

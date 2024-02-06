@@ -115,6 +115,13 @@
         }
         return null;
     }
+
+    function isUserExist(PDO $pdo, string $id) : bool {
+        $stmt = prepare($pdo, "SELECT * FROM user WHERE login = ?");
+        execute($stmt, [$id]);
+
+        return $stmt->fetch() ? true : false;
+    }
     
     /**
      * Adds a user to the database

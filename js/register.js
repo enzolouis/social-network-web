@@ -4,6 +4,7 @@ let secureSpecial = false;
 let secureNumber = false;
 var isValidPassword = false;
 var isValidPasswordVerify = false;
+var isValidLogin = false;
 
 
 document.getElementById("password").addEventListener("input", function(event) {
@@ -88,25 +89,59 @@ function passwordVerifyEventListener() {
         document.getElementById("secure-password-verify-details").style.height = "0";
     } else {
         style.setProperty('--register-bar-password-verify-width', '100%');
-        document.getElementById("secure-password-verify-details").style.height = "20px";            
+        document.getElementById("secure-password-verify-details").style.height = "15px";            
     }
 
     if (contentPassword == contentPasswordVerify) {
-        isValidPasswordVerify = true;
-        style.setProperty('--register-bar-password-verify-color', 'rgb(46, 204, 113)');
-        document.getElementById("secure-password-verify-details").style.height = "0";
+        if (isValidPassword) {
+            isValidPasswordVerify = true;
+            style.setProperty('--register-bar-password-verify-color', 'rgb(46, 204, 113)');
+            document.getElementById("secure-password-verify-details").style.height = "0";
+        } else {
+            isValidPasswordVerify = false;
+            style.setProperty('--register-bar-password-verify-color', 'rgb(231, 76, 60)');
+        }
+        
     } else {
         isValidPasswordVerify = false;
         style.setProperty('--register-bar-password-verify-color', 'rgb(231, 76, 60)');
+    }
+
+    if (isValidPassword) {
+        document.getElementById("message-valid-verify").innerHTML = "&#8226 Password does not match"
+    } else {
+        document.getElementById("message-valid-verify").innerHTML = "&#8226 Password not valid anymore"
     }
 }   
 
 document.getElementById("login").addEventListener('input', function(event) {
     document.getElementById("login").value = document.getElementById("login").value.replace(/[^a-zA-Z0-9]/g, '');
+
+    let login = document.getElementById("login").value;
+
+    $.ajax({
+        type: 'GET',
+        url: '../functions/userAlreadyHasThisLogin.php',
+        data: {
+            login: login,
+        },
+        beforeSend: function() {
+            console.log("test");
+        },
+        success: function(data) {
+            if (data) {
+                isValidLogin = false;
+                document.getElementById("secure-login-details").style.height = "15px";
+            } else {
+                isValidLogin = true;
+                document.getElementById("secure-login-details").style.height = "0";
+            }
+        }
+    })
 });
 
 document.getElementById("form-reg").addEventListener("submit", function(e) {
-     if (isValidPassword && isValidPasswordVerify) {
+     if (isValidPassword && isValidPasswordVerify && isValidLogin) {
         return true;
     }
     e.preventDefault();
