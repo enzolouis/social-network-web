@@ -40,3 +40,15 @@ function loadHeader(otherLogin) {
         }
     })
 }
+
+function editMessage(messageId) {
+    let message = document.getElementById(messageId);
+    let input = document.getElementById("chat-message-text");
+    input.value = message.getElementsByClassName("msg-text")[0].innerHTML;
+}
+
+function copyMessage(messageId) {
+    let message = document.getElementById(messageId);
+    let messageContent = message.getElementsByClassName("msg-text")[0].innerHTML;
+    navigator.clipboard.writeText(messageContent);
+}
