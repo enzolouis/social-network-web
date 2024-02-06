@@ -6,7 +6,7 @@
     if(isSessionValid()) {
         $user = $_SESSION["user"];
     } else {
-        disconnect();
+        disconnect(); 
     }
     $other = new User('xouxou', 'Maxence Maury-Balit', 'xxx', 'Wise mystical tree enjoyer');
 
@@ -16,6 +16,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script defer src="https://use.fontawesome.com/releases/v6.4.2/js/all.js"></script>
         <link rel = "stylesheet" href = "../../css/chat.css">
     </head>    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -35,12 +36,12 @@
 
                 <!-- Chat header  -->
                 <div class = "contacted-user" id = "chat-header">
-                    <img src="../images/loading.gif" class="loading-gif" style="display: none;" width="200px">
+                    <img src="../../images/loading.gif" class="loading-gif" style="display: none;" width="200px">
                 </div>
 
                 <!-- Chat box -->
                 <div id = "chat-box">
-                    <img src="../images/loading.gif" id="loading-gif" style="display: none;" width="200px">
+                    <img src="../../images/loading.gif" id="loading-gif" style="display: none;" width="200px">
                 </div>
 
                 <!-- Message input -->

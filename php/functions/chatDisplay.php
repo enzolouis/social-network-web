@@ -58,7 +58,15 @@
                     $result .= '<div class = "date-separator">'. $messageDate .'</div>';
                 }
                 $id = ($message->getSender() == $self) ? "user_me" : "user_other";
-                $result .= '<div class = "msg" id = "'.$id.'">
+                $editable = $id == "user_me" ? "<div class='msg-option-separator'></div>
+                                                <i class='msg-option fa-solid fa-pen-to-square' 
+                                                onClick='editMessage(this.parentNode.parentNode.id)'></i>
+                                                <div class='msg-option-separator'></div>
+                                                <i class='msg-option fa-solid fa-trash'></i>" : '';
+                $result .= '<div class = "msg '.$id.'" id = "'.$message->getId().'">
+                                <div class = "msg-options">
+                                    <i class="msg-option fa-solid fa-copy" onClick="copyMessage(this.parentNode.parentNode.id)"></i>' . $editable . 
+                                '</div>
                                 <p class = "msg-text">'.$message->getContent().'</p>
                             </div>';
                 $previousSentDate = $message->getSentDate();

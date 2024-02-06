@@ -168,14 +168,59 @@ main {
 
     max-width: 75%;
     border-radius: 5px;
+    position: relative;
 }
 
-.msg#user_other {
+.msg-options {
+    display: flex;
+    opacity: 0;
+    background-color: var(--dark-gray);
+    border-radius: 25px;
+    position: absolute;
+    top: -50%;
+    right: 4px;
+    padding: 6px 10px;
+    flex-direction: row;
+    transition: all 0.1s ease-in-out;
+    justify-content: space-between;
+    z-index: 20;
+}
+
+.msg-option {
+    min-width: 12px;
+    min-height: 12px;
+    width:15px; 
+    height:15px;
+
+    color: gray;
+    border-radius:50%; 
+    transition: all 0.15s ease-in-out;
+}
+
+.msg-option:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.msg-option.fa-trash:hover {
+    color: rgb(180, 38, 38);
+}
+
+.msg-option-separator {
+    width: 10px; 
+    height: 0px;
+}
+
+.msg:hover > .msg-options{
+    opacity: 1;
+}
+
+.msg.user_other {
     margin-right: auto;
     background-color: rgb(199, 199, 199);
 }
 
-.msg#user_me {
+.msg.user_me {
     margin-left: auto;
     background-color: rgb(22, 160, 133);
 }
