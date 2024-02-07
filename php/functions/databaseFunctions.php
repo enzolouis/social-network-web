@@ -19,11 +19,12 @@
         return $stmt;
     }
 
-    function execute($stmt, $arguments = array()) {
+    function execute($stmt, $arguments = array()) : bool {
         $stmt->execute($arguments);
         if (!$stmt) {
-            echo "Execute error : " . $stmt->errorInfo(); exit(1); 
+            echo "Execute error : " . $stmt->errorInfo(); return false; 
         }
+        return true;
     }
 
 ?>
