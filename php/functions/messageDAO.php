@@ -76,6 +76,13 @@
         $stmt = prepare($pdo, "DELETE FROM message WHERE id = ?");
         execute($stmt, [$id]);
     }
+    
+    function updateMessageText(PDO $pdo, int $id, string $content) : bool {
+        $stmt = prepare($pdo, "UPDATE message
+                               SET content = ? 
+                               WHERE id = ?");
+        return execute($stmt, [$content, $id]);
+    }
 
     function getMessagesBetweenPeople(PDO $pdo, string $personOne, string $personTwo) : array | null {
         $stmt = prepare($pdo, "SELECT * FROM message WHERE sender IN (:personOne, :personTwo) AND receiver IN (:personOne, :personTwo) ORDER BY sentDate ASC, sentHour ASC, id ASC");

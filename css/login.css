@@ -112,17 +112,37 @@ input[type="submit"]:hover {
     background-color: var(--turquoise-hover);
 }
 
-.form-register #password,
+.passwordDivs {
+    display:flex;
+    align-items: center;
+}
+
+.passwordDivs button.hide-password {
+    margin:0;
+    padding:0;
+    cursor:pointer;
+    position: absolute;
+    right:10px;
+    background: none;
+    color:#aaaaaa;
+    font-size:15px;
+}
+
+
+#password,
 .form-register #password-verify,
 .form-register #login {
     margin: 0;
 }
 
-.form-register #passwordDiv,
+#passwordDiv,
 .form-register #passwordVerifyDiv,
 .form-register #passwordLoginDiv {
-    margin: 0;
     position: relative;
+    margin:0;
+}
+.form-login #passwordDiv {
+    margin-bottom:15px;
 }
 
 .form-register #passwordDiv::after,

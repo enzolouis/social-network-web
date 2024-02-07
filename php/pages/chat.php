@@ -45,8 +45,8 @@
                 <!-- Message input -->
                 <div id = "chat-message">
                     <form action = "#">
-                        <input type = "text"   id = "chat-message-text"   name = "text">
-                        <input type = "submit" id = "chat-message-submit" name = "submit">
+                        <input type = "text" id = "chat-message-text" name = "text">
+                        <button type = "button" id = "chat-message-submit" onclick = "sendMessage()">Envoyer</button>
                     </form>
                 </div>
             </div>
@@ -62,3 +62,5 @@
         chat.scrollTop = chat.scrollHeight;
     </script>
 </html> 
+
+<?php //disconnect(); ?>

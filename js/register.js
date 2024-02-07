@@ -110,7 +110,7 @@ function passwordVerifyEventListener() {
     if (isValidPassword) {
         document.getElementById("message-valid-verify").innerHTML = "&#8226 Password does not match"
     } else {
-        document.getElementById("message-valid-verify").innerHTML = "&#8226 Password not valid anymore"
+        document.getElementById("message-valid-verify").innerHTML = "&#8226 Password not valid yet"
     }
 }   
 
@@ -129,10 +129,13 @@ document.getElementById("login").addEventListener('input', function(event) {
             console.log("test");
         },
         success: function(data) {
+            console.log(data)
             if (data) {
+                console.log("exist")
                 isValidLogin = false;
                 document.getElementById("secure-login-details").style.height = "15px";
             } else {
+                console.log("not exist")
                 isValidLogin = true;
                 document.getElementById("secure-login-details").style.height = "0";
             }
@@ -147,3 +150,34 @@ document.getElementById("form-reg").addEventListener("submit", function(e) {
     e.preventDefault();
 })
 
+
+let isRegisterPasswordShow = false;
+
+document.getElementById("hide-password").addEventListener("click", function() {
+    let element = document.getElementById("hide-password");
+
+    if (isRegisterPasswordShow) {
+        element.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        document.getElementById("password").type = "password";
+        isRegisterPasswordShow = false;
+    } else {
+        element.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        document.getElementById("password").type = "text";
+        isRegisterPasswordShow = true;
+    }
+})
+
+let isRegisterPasswordVerifyShow = false;
+document.getElementById("hide-password-verify").addEventListener("click", function() {
+    let element = document.getElementById("hide-password-verify");
+
+    if (isRegisterPasswordVerifyShow) {
+        element.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        document.getElementById("password-verify").type = "password";
+        isRegisterPasswordVerifyShow = false;
+    } else {
+        element.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        document.getElementById("password-verify").type = "text";
+        isRegisterPasswordVerifyShow = true;
+    }
+})

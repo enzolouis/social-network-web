@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <head>
-    <link rel="stylesheet" type="text/css" href="../../css/reset.css">
     <link rel="stylesheet" type="text/css" href="../../css/style.css">
     <link rel="stylesheet" type="text/css" href="../../css/login.css">
     <script defer src="https://use.fontawesome.com/releases/v6.4.2/js/all.js"></script>
@@ -19,7 +18,10 @@
             <input type="text" id="username" name="username" placeholder="The edge" autocomplete="off" maxlength="50" required>
 
             <label for="password">Password</label>
-            <div id="passwordDiv"><input type="password" id="password" name="password" placeholder="NX:b7!LrPg@t2X9" minlength=8 maxlength="50" value="" required></div>
+            <div class="passwordDivs" id="passwordDiv">
+                <input type="password" id="password" name="password" placeholder="NX:b7!LrPg@t2X9" minlength=8 maxlength="50" value="" required>
+                <button type="button" class="hide-password" id="hide-password"><i class="fa-solid fa-eye"></i></button>
+            </div>
             <label class="secure-password-and-bad-password" id="secure-password">
                 <div id="secure-password-details">
                     <p id="secure-8letters"><i class="fa-solid fa-xmark"></i> 8 letters</p>
@@ -30,7 +32,10 @@
             </label>
 
             <label for="password-verify">Password confirm</label>
-            <div id="passwordVerifyDiv"><input type="password" id="password-verify" name="password-verify" placeholder="NX:b7!LrPg@t2X9" minlength="8" maxlength="50" required></div>
+            <div class="passwordDivs" id="passwordVerifyDiv">
+                <input type="password" id="password-verify" name="password-verify" placeholder="NX:b7!LrPg@t2X9" minlength="8" maxlength="50" required>
+                <button type="button" class="hide-password" id="hide-password-verify"><i class="fa-solid fa-eye"></i></button>
+            </div>
             <label class="secure-password-and-bad-password" id="secure-password-verify">
                 <div id="secure-password-verify-details">
                     <p id="message-valid-verify">&#8226 Password does not match</p>
