@@ -27,4 +27,11 @@
         return true;
     }
 
+    function disconnect() {
+        session_destroy();
+        session_abort(); // Just in case, you never know
+        header("Location: ../index.php");
+        exit();
+    }
+
 ?>

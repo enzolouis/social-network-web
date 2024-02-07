@@ -72,6 +72,11 @@
         execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked]);
     }
 
+    function deleteMessage(PDO $pdo, int $id) {
+        $stmt = prepare($pdo, "DELETE FROM message WHERE id = ?");
+        execute($stmt, [$id]);
+    }
+    
     function updateMessageText(PDO $pdo, int $id, string $content) : bool {
         $stmt = prepare($pdo, "UPDATE message
                                SET content = ? 

@@ -93,6 +93,10 @@ main {
     border-radius: 50%;
 }
 
+.contacted-user-pfp-header {
+    margin-top: 0px;
+}
+
 .contacted-user-status {
     width: 18px;
     height: 18px;
