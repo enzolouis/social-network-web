@@ -11,7 +11,7 @@
     require("messageDAO.php");
     $pdo = createConnection();
     echo "yo";
-    echo getUserById($pdo, "firstUser");
+    echo getUserByLogin($pdo, "firstUser");
     $xouxou = new User('xouxou', 'Maxence Maury-Balit', 'xxx', 'Wise mystical tree enjoyer');
     $nautilus = new User('Nautilus', 'Zoubairov Ibrahim', 'yyy', 'NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOON');
     foreach (getMessagesBetweenPeople($pdo, $xouxou, $nautilus) as $message){

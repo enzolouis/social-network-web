@@ -32,7 +32,7 @@
 
     // 
     function showChatHeader(PDO $pdo, string $other) : string {
-        $user = getUserById($pdo, $other);
+        $user = getUserByLogin($pdo, $other);
         $imageURL = empty($user->getProfilePicture()) ? '' : 'src = "'. $user->getProfilePicture() .'"';
         return '<div class = "contacted-user-pfp-container">
                     <img class = "contacted-user-pfp contacted-user-pfp-header" '. $imageURL .'>

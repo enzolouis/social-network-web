@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require("databaseFunctions.php");
 require("userDAO.php");
 

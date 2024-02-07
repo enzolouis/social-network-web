@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require("databaseFunctions.php");
 require("userDAO.php");
 
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $pdo = createConnection();
 
-    $user = getUserById($pdo, $login);
+    $user = getUserByLogin($pdo, $login);
 
     if (!$user) {
         if ($password !== $passwordverify) {

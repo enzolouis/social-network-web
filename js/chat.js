@@ -3,7 +3,7 @@ var otherUser;
 
 function loadHeaderAndChat(login, otherLogin) {
     connectedUser = login;
-    otherUser = otherUser;
+    otherUser = otherLogin;
     let contactedUser = document.getElementById(otherLogin);
     let contactedUserOnClick = contactedUser.onclick;
     contactedUser.onclick = null;
@@ -15,7 +15,10 @@ function loadHeaderAndChat(login, otherLogin) {
 }
 
 function loadChat(login, otherLogin) {
-    document.getElementById("chat-box").innerHTML = "";
+    let chat = document.getElementById("chat-box");
+    while (chat.childElementCount > 1) {
+        chat.removeChild(chat.lastChild);
+    }
     $.ajax({
         type: 'POST',
         url: '../functions/showMessages.php',
@@ -36,7 +39,10 @@ function loadChat(login, otherLogin) {
                 },
                 success: function(data) {
                     if (data != "No changes") {
-                        $('#chat-box').html(data);
+                        while (chat.childElementCount > 1) {
+                            chat.removeChild(chat.lastChild);
+                        }
+                        $('#chat-box').append(data);
                     }
                 }
             })
@@ -72,29 +78,36 @@ function copyMessage(messageId) {
     navigator.clipboard.writeText(messageContent);
 }
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 function deleteMessage(messageId) {
     let chat = document.getElementById("chat-box");
-    let chatContent = chat.innerHTML;
     chat.removeChild(document.getElementById(messageId));
+    let chatContent = chat.innerHTML;
     $.ajax({
         type: 'POST',
         url: '../functions/deleteMessage.php',
         data: {
             id: messageId,
         },
-        success: function(data) {
-            alert("Message supprimé !");
+        success: function() {
             $.ajax({
                 type: 'POST',
                 url: '../functions/sessionCache.php',
                 data: {
-                    user: connectedUser,
+                    currentUser: connectedUser,
                     otherUser: otherUser,
                     content: chatContent,
+                },
+                success: function(data) {
+                    console.log(data);
                 }
             })
         }
     })
+    document.getElementById("chat-popup").style.opacity = 1;
+    setTimeout(() => document.getElementById("chat-popup").style.opacity = 0, "2000");
+    
 }
 
 function sendMessage() {

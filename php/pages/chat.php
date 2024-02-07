@@ -3,12 +3,11 @@
     require("../functions/databaseFunctions.php");
 
     $user = null;
-    if(isSessionValid()) {
+    if (isSessionValid()) {
         $user = $_SESSION["user"];
     } else {
         disconnect(); 
     }
-    $other = new User('xouxou', 'Maxence Maury-Balit', 'xxx', 'Wise mystical tree enjoyer');
 
     $pdo = createConnection();
 ?>
@@ -40,6 +39,7 @@
 
                 <!-- Chat box -->
                 <div id = "chat-box">
+                    <div id = "chat-popup">Message deleted</div>
                 </div>
 
                 <!-- Message input -->
