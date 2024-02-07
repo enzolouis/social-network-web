@@ -72,6 +72,11 @@
         execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked]);
     }
 
+    function deleteMessage(PDO $pdo, int $id) {
+        $stmt = prepare($pdo, "DELETE FROM message WHERE id = ?");
+        execute($stmt, [$id]);
+    }
+
     function getMessagesBetweenPeople(PDO $pdo, string $personOne, string $personTwo) : array | null {
         $stmt = prepare($pdo, "SELECT * FROM message WHERE sender IN (:personOne, :personTwo) AND receiver IN (:personOne, :personTwo) ORDER BY sentDate ASC, sentHour ASC, id ASC");
         execute($stmt, [":personOne" => $personOne, ":personTwo" => $personTwo]);

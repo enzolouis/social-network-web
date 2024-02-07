@@ -36,12 +36,10 @@
 
                 <!-- Chat header  -->
                 <div class = "contacted-user" id = "chat-header">
-                    <img src="../../images/loading.gif" class="loading-gif" style="display: none;" width="200px">
                 </div>
 
                 <!-- Chat box -->
                 <div id = "chat-box">
-                    <img src="../../images/loading.gif" id="loading-gif" style="display: none;" width="200px">
                 </div>
 
                 <!-- Message input -->

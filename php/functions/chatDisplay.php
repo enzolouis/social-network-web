@@ -15,7 +15,7 @@
         if ($users) {
             foreach ($users as $contactedUser) {
                 $imageURL = empty($contactedUser->getProfilePicture()) ? '' : 'src = "'. $contactedUser->getProfilePicture() .'"';
-                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadChat(\'' .$user. '\', this.id); loadHeader(this.id);">
+                $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadHeaderAndChat(\'' .$user. '\', this.id);">
                                 <div class = "contacted-user-pfp-container">
                                     <img class = "contacted-user-pfp" '. $imageURL .'>
                                     <div class = "contacted-user-status"></div>
@@ -35,7 +35,7 @@
         $user = getUserById($pdo, $other);
         $imageURL = empty($user->getProfilePicture()) ? '' : 'src = "'. $user->getProfilePicture() .'"';
         return '<div class = "contacted-user-pfp-container">
-                    <img class = "contacted-user-pfp" '. $imageURL .'>
+                    <img class = "contacted-user-pfp contacted-user-pfp-header" '. $imageURL .'>
                     <div class = "contacted-user-status"></div>
                 </div>
                 <div class = "contacted-user-infos">
@@ -62,7 +62,8 @@
                                                 <i class='msg-option fa-solid fa-pen-to-square' 
                                                 onClick='editMessage(this.parentNode.parentNode.id)'></i>
                                                 <div class='msg-option-separator'></div>
-                                                <i class='msg-option fa-solid fa-trash'></i>" : '';
+                                                <i class='msg-option fa-solid fa-trash' 
+                                                onClick='deleteMessage(this.parentNode.parentNode.id)'></i>" : '';
                 $result .= '<div class = "msg '.$id.'" id = "'.$message->getId().'">
                                 <div class = "msg-options">
                                     <i class="msg-option fa-solid fa-copy" onClick="copyMessage(this.parentNode.parentNode.id)"></i>' . $editable . 

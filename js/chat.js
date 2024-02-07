@@ -1,42 +1,59 @@
+var connectedUser;
+var otherUser;
+
+function loadHeaderAndChat(login, otherLogin) {
+    let contactedUser = document.getElementById(otherLogin);
+    let contactedUserOnClick = contactedUser.onclick;
+    contactedUser.onclick = null;
+    loadHeader(otherLogin);
+    loadChat(login, otherLogin);
+    $(document).ajaxStop(function(){
+        contactedUser.onclick = contactedUserOnClick;
+    });
+}
+
 function loadChat(login, otherLogin) {
-    let chat = document.getElementById("chat-box");
-    while (chat.childElementCount > 1) {
-        chat.removeChild(chat.lastChild);
-    }
+    connectedUser = login;
+    otherUser = otherUser;
+    document.getElementById("chat-box").innerHTML = "";
     $.ajax({
         type: 'POST',
         url: '../functions/showMessages.php',
         data: {
+            cacheOnly: "true",
             user: login,
             otherUser: otherLogin,
         },
-        beforeSend: function() {
-            $('#chat-box.loading-gif').show();
-        },
         success: function(data) {
             $('#chat-box').append(data);
-            $('#chat-box.loading-gif').hide();
+            $.ajax({
+                type: 'POST',
+                url: '../functions/showMessages.php',
+                data: {
+                    cacheOnly: "false",
+                    user: login,
+                    otherUser: otherLogin,
+                },
+                success: function(data) {
+                    if (data != "No changes") {
+                        $('#chat-box').html(data);
+                    }
+                }
+            })
         }
     })
 }
 
 function loadHeader(otherLogin) {
-    let chatHeader = document.getElementById("chat-header");
-    while (chatHeader.childElementCount > 1) {
-        chatHeader.removeChild(chatHeader.lastChild);
-    }
+    document.getElementById("chat-header").innerHTML = "";
     $.ajax({
         type: 'POST',
         url: '../functions/showHeader.php',
         data: {
             otherUser: otherLogin,
         },
-        beforeSend: function() {
-            $('#chat-header.loading-gif').show();
-        },
         success: function(data) {
             $('#chat-header').append(data);
-            $('#chat-header.loading-gif').hide();
         }
     })
 }
@@ -51,4 +68,29 @@ function copyMessage(messageId) {
     let message = document.getElementById(messageId);
     let messageContent = message.getElementsByClassName("msg-text")[0].innerHTML;
     navigator.clipboard.writeText(messageContent);
+}
+
+function deleteMessage(messageId) {
+    let chat = document.getElementById("chat-box");
+    let chatContent = chat.innerHTML;
+    chat.removeChild(document.getElementById(messageId));
+    $.ajax({
+        type: 'POST',
+        url: '../functions/deleteMessage.php',
+        data: {
+            id: messageId,
+        },
+        success: function(data) {
+            alert("Message supprimé !");
+            $.ajax({
+                type: 'POST',
+                url: '../functions/sessionCache.php',
+                data: {
+                    user: connectedUser,
+                    otherUser: otherUser,
+                    content: chatContent,
+                }
+            })
+        }
+    })
 }
