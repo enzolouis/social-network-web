@@ -46,10 +46,10 @@
 
                 <!-- Message input -->
                 <div id = "chat-message">
-                    <form action = "#">
+                    <div id = "chat-inputs">
                         <input type = "text" id = "chat-message-text" name = "text">
                         <button type = "button" id = "chat-message-submit" onclick = "sendMessage()">Envoyer</button>
-                    </form>
+                    </div>
                 </div>
             </div>
 
