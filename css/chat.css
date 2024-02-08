@@ -256,6 +256,10 @@ main {
     height: 100px;
 }
 
+.msg.editing {
+    background-color: lightseagreen;
+}
+
 .date-separator {
     margin: 50px 50px 30px;
     padding-bottom: 10px;
@@ -289,6 +293,10 @@ main {
     justify-content: space-between;
 }
 
+#chat-inputs.editing {
+    border-color: lightseagreen;
+}
+
 #chat-message-text {
     background: none;
     border: none;
@@ -302,4 +310,9 @@ main {
 
 #chat-message-text:focus {
     outline: none;
+}
+
+#chat-message-edit {
+    display: none;
+    margin: 0 5px;
 }

@@ -58,22 +58,32 @@
                     $result .= '<div class = "date-separator">'. $messageDate .'</div>';
                 }
                 $id = ($message->getSender() == $self) ? "user_me" : "user_other";
-                $editable = $id == "user_me" ? "<div class='msg-option-separator'></div>
-                                                <i class='msg-option fa-solid fa-pen-to-square' 
-                                                onClick='editMessage(this.parentNode.parentNode.id)'></i>
-                                                <div class='msg-option-separator'></div>
-                                                <i class='msg-option fa-solid fa-trash' 
-                                                onClick='deleteMessage(this.parentNode.parentNode.id)'></i>" : '';
-                $result .= '<div class = "msg '.$id.'" id = "'.$message->getId().'">
-                                <div class = "msg-options">
-                                    <i class="msg-option fa-solid fa-copy" onClick="copyMessage(this.parentNode.parentNode.id)"></i>' . $editable . 
-                                '</div>
-                                <p class = "msg-text">'.$message->getContent().'</p>
-                            </div>';
+                $result .= addChatMessage($id, $message->getId(), $message->getContent());
                 $previousSentDate = $message->getSentDate();
                 $previousSentHour = $message->getSentHour();
             }
         }
+        return $result;
+    }
+
+    function addChatMessage(string $idUser, string $idMessage, string $content): string {
+
+        // If the message comes from the user, we can edit it and therefore we have the options available
+        $editable = $idUser == "user_me" ? "<div class='msg-option-separator'></div>
+                                            <i class='msg-option fa-solid fa-pen-to-square' onClick='editMessage(this.parentNode.parentNode.id)'></i>
+                                            <div class='msg-option-separator'></div>
+                                            <i class='msg-option fa-solid fa-trash' onClick='deleteMessage(this.parentNode.parentNode.id)'></i>" 
+                                            : '';
+
+        // The message div
+        $result =  '<div class = "msg '.$idUser.'" id = "'.$idMessage.'">
+                        <div class = "msg-options">
+                            <i class="msg-option fa-solid fa-copy" onClick="copyMessage(this.parentNode.parentNode.id)"></i>
+                            '.$editable.'
+                        </div>
+                        <p class = "msg-text">'.$content.'</p>
+                    </div>';
+
         return $result;
     }
 

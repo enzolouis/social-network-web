@@ -46,6 +46,7 @@
                 <div id = "chat-message">
                     <div id = "chat-inputs">
                         <input type = "text" id = "chat-message-text" name = "text">
+                        <button type = "button" id = "chat-message-edit" onclick = "stopEdit()">X</button>
                         <button type = "button" id = "chat-message-submit" onclick = "sendMessage()">Envoyer</button>
                     </div>
                 </div>
@@ -55,12 +56,6 @@
     </body>
 
     <script src="../../js/chat.js"></script>
-
-    <!-- Scroll down the chat -->    
-    <script>
-        var chat = document.getElementById("chat-box");
-        chat.scrollTop = chat.scrollHeight;
-    </script>
 </html> 
 
 <?php //disconnect(); ?>
