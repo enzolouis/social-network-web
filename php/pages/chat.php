@@ -20,6 +20,7 @@
     </head>    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <body>
+        <?php include("header.html"); ?>
         <main>
 
             <div id = "discussions">
@@ -45,8 +46,14 @@
                 <!-- Message input -->
                 <div id = "chat-message">
                     <div id = "chat-inputs">
-                        <input type = "text" id = "chat-message-text" name = "text">
-                        <button type = "button" id = "chat-message-submit" onclick = "sendMessage()">Envoyer</button>
+                        <input type = "text" id = "chat-message-text" name = "text" placeholder="Enter message...">
+                        <i class="chat-option fa-solid fa-circle-xmark"></i>
+                        <div class='chat-option-separator'></div>
+                        <i class="chat-option fa-solid fa-image"></i>
+                        <div class='chat-option-separator'></div>
+                        <i class="chat-option fa-solid fa-face-smile"></i>
+                        <div class='chat-option-separator'></div>
+                        <i class="chat-option fa-solid fa-paper-plane" id = "chat-message-submit" onclick = "sendMessage()"></i>
                     </div>
                 </div>
             </div>

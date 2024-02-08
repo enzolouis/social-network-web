@@ -1,11 +1,5 @@
 @import "style.css";
 
-:root {
-    --background: rgb(21, 21, 21);
-    --dark-gray: rgb(33, 33, 33);
-    --gray: rgb(50, 50, 50);
-}
-
 html, body {
     height: 100%;
     background-color: var(--background);
@@ -13,9 +7,6 @@ html, body {
 
 main {
     height: 100%;
-    width: 85%;
-    padding: 15px;
-    margin: auto;
     display: flex;
     flex-direction: row;
 }
@@ -23,14 +14,14 @@ main {
 
 /* Discussions */
 #discussions {
-    max-width: 30%;
+    max-width: 300px;
     height: 100%;
     flex: 30%;
 
     display: flex;
     flex-direction: column;
 
-    background-color: var(--gray);
+    background-color: var(--dark-02);
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
 }
@@ -43,7 +34,7 @@ main {
     height: 10vh;
 
     border-top-left-radius: 7px;
-    background-color: var(--dark-gray);
+    background-color: var(--dark-01);
     color: white;
     border-bottom: #727272 solid 1px;
 }
@@ -63,7 +54,7 @@ main {
     display: flex;
 
     color: white;
-    background-color: var(--dark-gray);
+    background-color: var(--dark-01);
     border-radius: 10px;
 
     transition: 0.2s ease-in-out;
@@ -71,12 +62,12 @@ main {
 
 .contacted-user:not(#chat-header):hover {
     cursor: pointer;
-    background-color: var(--dark-gray-hover);
+    background-color: var(--dark-01);
     transform: scale(1.02);
 }
 
 .contacted-user:not(#chat-header):hover .contacted-user-status {
-    border-color: var(--dark-gray-hover);
+    border-color: var(--dark-01);
 }
 
 .contacted-user-pfp-container { 
@@ -103,7 +94,7 @@ main {
 
     background-color: green;
     border-radius: 50%;
-    border: 4px solid var(--dark-gray);
+    border: 4px solid var(--dark-01);
     transition: 0.2s ease-in-out;
 
     position: relative;
@@ -130,7 +121,7 @@ main {
 /* Chat */
 #chat {
     height: 100%;
-    margin: 0 5px;
+    border-left: #727272 solid 1px;
 
     display: flex;
     flex-direction: column;
@@ -154,7 +145,7 @@ main {
 
 /* Chat box */
 #chat-box {
-    background-color: var(--gray);
+    background-color: var(--dark-02);
     padding: 15px;
 
     overflow-y: scroll;
@@ -176,7 +167,7 @@ main {
     top: 20px;
     padding: 20px;
 
-    background-color: var(--dark-gray);
+    background-color: var(--dark-01);
     border-radius: 45px;
     color: white;
     transition: all 0.5s ease-in-out;
@@ -196,7 +187,7 @@ main {
 .msg-options {
     display: flex;
     opacity: 0;
-    background-color: var(--dark-gray);
+    background-color: var(--dark-01);
     border-radius: 25px;
     position: absolute;
     top: -50%;
@@ -214,7 +205,7 @@ main {
     width:15px; 
     height:15px;
 
-    color: gray;
+    color: var(--gray-02);
     border-radius:50%; 
     transition: all 0.15s ease-in-out;
 }
@@ -269,21 +260,18 @@ main {
 
 /* Chat message input */
 #chat-message {
-    background-color: var(--dark-gray);
+    background-color: var(--dark-01);
     border-bottom-right-radius: 10px;
-    
-    flex: 10%;
-
-    padding: 25px;
+    padding: 10px;
 }
 
 #chat-inputs {
     width: 100%;
-    height: 50px;
-    padding: 5px;
+    min-height: 40px;
+    padding: 5px 20px;
 
-    border: solid 2px white;
-    border-radius: 10px;
+    border: solid 1px white;
+    border-radius: 50px;
 
     display: flex;
     justify-content: space-between;
@@ -293,7 +281,7 @@ main {
     background: none;
     border: none;
 
-    margin: 0 5px;
+    margin: 0px 5px;
     width: 100%;
 
     color: white;
@@ -302,4 +290,33 @@ main {
 
 #chat-message-text:focus {
     outline: none;
+}
+
+.chat-option {
+    min-width: 20px;
+    min-height: 20px;
+    margin: auto 0px;
+
+    color: var(--gray-02);
+    transition: all 0.15s ease-in-out;
+}
+
+.chat-option:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.chat-option-separator {
+    width: 20px; 
+    height: 0px;
+    margin: auto 0px;
+}
+
+.chat-option-separator:last-of-type {
+    width: 2px; 
+    height: 20px;
+    margin-right: 15px;
+    margin-left: 15px;
+    
+    background-color: var(--gray-02);
 }

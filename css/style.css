@@ -3,6 +3,18 @@
 @import "header.css";
 
 :root {
+	/*
+	--header-background: #2e2E2E;
+	--header-foreground: #dddddd;
+
+	--header-background-white-theme: #eeeeee;
+	--header-foreground-white-theme: #2e2E2E;
+	*/
+	--header-background: rgb(22, 22, 22);
+	--header-foreground: #dddddd;
+
+	--header-background-white-theme: #eeeeee;
+	--header-foreground-white-theme: #2e2E2E;
 	--primary-background: #eeeeee;
 	--primary-foreground: black;
 	
@@ -10,6 +22,22 @@
 	--secondary-foreground: black;
 
 	--red: #e74c3c;
+
+	--background: rgb(21, 21, 21);
+	
+    --dark-00: rgb(22, 22, 22);
+    --dark-01: rgb(22, 22, 22);
+    --dark-02: rgb(30, 30, 30);
+    --dark-03: rgb(33, 33, 33);
+    --dark-04: rgb(36, 36, 36);
+    --dark-05: rgb(39, 39, 39);
+    --dark-06: rgb(44, 44, 44);
+    --dark-07: rgb(50, 50, 50);
+    --dark-08: rgb(53, 53, 53);
+    --dark-09: rgb(56, 56, 56);
+
+    --gray-01: rgb(60, 60, 60);
+    --gray-02: rgb(128, 128, 128);
 }
 
 * {
@@ -22,5 +50,5 @@ button {
 
 
 main {
-	margin-left: 90px; /* width of the footer */
+	margin-left: 90px !important; /* width of the footer */ 
 }
