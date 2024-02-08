@@ -156,6 +156,19 @@ main {
     position: relative;
 }
 
+#chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-box::-webkit-scrollbar-track {
+    background: none;
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+    background-color: #2e2E2E;
+    border-radius: 100px;
+}
+
 #chat-popup {
     opacity: 0;
     position: absolute;
@@ -247,6 +260,10 @@ main {
     height: 100px;
 }
 
+.msg.editing {
+    background-color: lightseagreen;
+}
+
 .date-separator {
     margin: 50px 50px 30px;
     padding-bottom: 10px;
@@ -275,6 +292,10 @@ main {
 
     display: flex;
     justify-content: space-between;
+}
+
+#chat-inputs.editing {
+    border-color: lightseagreen;
 }
 
 #chat-message-text {
@@ -319,4 +340,8 @@ main {
     margin-left: 15px;
     
     background-color: var(--gray-02);
+}
+
+#chat-message-edit {
+    display: none;
 }

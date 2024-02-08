@@ -47,7 +47,7 @@
                 <div id = "chat-message">
                     <div id = "chat-inputs">
                         <input type = "text" id = "chat-message-text" name = "text" placeholder="Enter message...">
-                        <i class="chat-option fa-solid fa-circle-xmark"></i>
+                        <i class="chat-option fa-solid fa-circle-xmark" id = "chat-message-edit" onclick = "stopEdit()"></i>
                         <div class='chat-option-separator'></div>
                         <i class="chat-option fa-solid fa-image"></i>
                         <div class='chat-option-separator'></div>
@@ -62,12 +62,6 @@
     </body>
 
     <script src="../../js/chat.js"></script>
-
-    <!-- Scroll down the chat -->    
-    <script>
-        var chat = document.getElementById("chat-box");
-        chat.scrollTop = chat.scrollHeight;
-    </script>
 </html> 
 
 <?php //disconnect(); ?>

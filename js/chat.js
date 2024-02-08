@@ -11,6 +11,7 @@ function loadHeaderAndChat(login, otherLogin) {
     loadChat(login, otherLogin);
     $(document).ajaxStop(function(){
         contactedUser.onclick = contactedUserOnClick;
+        scrollDownChat();
     });
 }
 
@@ -77,12 +78,15 @@ function editMessage(messageId) {
 
     // Gets the message and the input field
     let message = document.getElementById(messageId);
-    let input = document.getElementById("chat-message-text");
+    let input   = document.getElementById("chat-message-text");
+    let editBtn = document.getElementById("chat-message-edit");
+    let form    = document.getElementById("chat-inputs");  
 
-    // Sets the input 'id-message' attribute to the selected message's id
+    editBtn.style.display = "block";
+    form.classList.add("editing");
+    message.classList.add("editing");
+
     input.setAttribute("id-message", messageId);
-
-    // Puts the selected message inside the input field
     input.value = message.getElementsByClassName("msg-text")[0].innerHTML;
 }
 
@@ -162,8 +166,7 @@ function sendMessage() {
                 if(data) {
                     console.log("%c SUCCES: Update message", "color:green;");
 
-                    input.value = "";
-                    input.removeAttribute("id-message");
+                    stopEdit();
                     document.getElementById(messageId).getElementsByClassName("msg-text")[0].innerHTML = msg;
 
                     chat = document.getElementById("chat-box").innerHTML;
@@ -201,4 +204,25 @@ function overrideChatCache(chatContent) {
             else     console.log("%c ERREUR: Cache chat override", "color:red;");
         }
     })
+}
+
+
+function scrollDownChat() {
+    let chat = document.getElementById("chat-box");
+    chat.scrollTop = chat.scrollHeight;
+}
+
+
+function stopEdit() {
+    let input    = document.getElementById("chat-message-text");
+    let editBtn  = document.getElementById("chat-message-edit");
+    let editings = document.getElementsByClassName("editing");
+
+    while(editings.length) {
+        editings[0].classList.remove("editing");
+    }
+
+    input.removeAttribute("id-message");
+    input.value = "";
+    editBtn.style.display = "none";
 }
