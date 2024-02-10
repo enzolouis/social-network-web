@@ -127,9 +127,16 @@ main {
 
     white-space: nowrap;
     overflow: hidden;
+    line-height: normal;
 }
 
-.contacted-user-description {
+.contacted-user-name {    
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.contacted-user-message {
     font-size: 14px;
     color: grey;
 

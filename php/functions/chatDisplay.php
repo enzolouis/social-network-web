@@ -3,11 +3,6 @@
     require("userDAO.php");
 
     // 
-    function showDiscussionsHeader(PDO $pdo, string $user) : string {
-        return "";
-    }
-
-    // 
     function showDiscussionsChats(PDO $pdo, string $user) : string {
         $users = getContactedUsers($pdo, $user);
         $result = "";
@@ -15,6 +10,10 @@
         if ($users) {
             foreach ($users as $contactedUser) {
                 $imageURL = empty($contactedUser->getProfilePicture()) ? '' : 'src = "'. $contactedUser->getProfilePicture() .'"';
+                $messages = getMessagesBetweenPeople($pdo, $user, $contactedUser->getLogin());
+                $lastMessage = end($messages);
+                $who = ($lastMessage->getSender() == $user) ? "You: " : "Them: ";
+
                 $result .= '<div class = "contacted-user" id = "'. $contactedUser->getLogin() .'" onclick="loadHeaderAndChat(\'' .$user. '\', this.id);">
                                 <div class = "contacted-user-pfp-container">
                                     <img class = "contacted-user-pfp" '. $imageURL .'>
@@ -22,7 +21,7 @@
                                 </div>
                                 <div class = "contacted-user-infos">
                                     <p class = "contacted-user-name">'.$contactedUser->getUsername().'</p>
-                                    <p class = "contacted-user-description">'.$contactedUser->getDescription().'</p>
+                                    <p class = "contacted-user-message">'.$who.$lastMessage->getContent().'</p>
                                 </div>
                             </div>';
             }
