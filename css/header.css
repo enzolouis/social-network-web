@@ -23,7 +23,7 @@ header > button {
 	border:none;
 	cursor: pointer;
 	opacity:0.5;
-	transition:opacity 0.1s linear;
+	transition: opacity 0.1s linear;
 	white-space: nowrap;
 
 	display: flex;
@@ -31,6 +31,10 @@ header > button {
 
 	color: var(--header-foreground);
 	z-index: 1;
+}
+
+header > button > svg {
+	transition: transform 0.3s ease;
 }
 
 /* transition on items hover */

@@ -3,13 +3,6 @@
 @import "header.css";
 
 :root {
-	/*
-	--header-background: #2e2E2E;
-	--header-foreground: #dddddd;
-
-	--header-background-white-theme: #eeeeee;
-	--header-foreground-white-theme: #2e2E2E;
-	*/
 	--header-background: rgb(22, 22, 22);
 	--header-foreground: #dddddd;
 
@@ -26,7 +19,7 @@
 	--background: rgb(21, 21, 21);
 	
     --dark-00: rgb(22, 22, 22);
-    --dark-01: rgb(22, 22, 22);
+    --dark-01: rgb(26, 26, 26);
     --dark-02: rgb(30, 30, 30);
     --dark-03: rgb(33, 33, 33);
     --dark-04: rgb(36, 36, 36);

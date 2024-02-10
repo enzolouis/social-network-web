@@ -12,7 +12,47 @@ main {
 }
 
 
-/* Discussions */
+/********* Discussions *********/
+/**** Discussions header ****/ 
+#discussions-header {
+    margin-bottom: 10px;
+    display: flex;
+
+    height: 10vh;
+    width: auto;
+
+    border-top-left-radius: 7px;
+    background-color: var(--dark-00);
+    color: white;
+    border-bottom: var(--dark-09) solid 1px;
+}
+
+#user-search {
+    width: 100%;
+    margin: auto 10px;
+    height: 40px;
+    background-color: var(--dark-02);
+    border-radius: 10px;
+    display: flex;
+    padding: 0px 10px;
+    border: solid 1px var(--dark-09);
+}
+
+#user-search-input {
+    font-size: 15px;
+    background-color: none;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+#user-search-input:focus {
+    outline: none;
+}
+
+/**** Discussions body ****/ 
 #discussions {
     max-width: 300px;
     height: 100%;
@@ -26,27 +66,6 @@ main {
     border-bottom-left-radius: 7px;
 }
 
-#discussions-header {
-    padding: 15px;
-    margin-bottom: 10px;
-    text-align: center;
-    
-    height: 10vh;
-
-    border-top-left-radius: 7px;
-    background-color: var(--dark-01);
-    color: white;
-    border-bottom: #727272 solid 1px;
-}
-
-#discussions-header > h1 {
-    font-size: 25px;
-}
-
-#discussions-header > p {
-    font-size: 16px;
-}
-
 .contacted-user {
     height: 60px;
     margin: 4px 10px;
@@ -54,7 +73,7 @@ main {
     display: flex;
 
     color: white;
-    background-color: var(--dark-01);
+    background-color: var(--dark-00);
     border-radius: 10px;
 
     transition: 0.2s ease-in-out;
@@ -71,7 +90,7 @@ main {
 }
 
 .contacted-user-pfp-container { 
-    margin: auto 8px;
+    margin: 0px 8px;
 }
 
 .contacted-user-pfp {
@@ -79,13 +98,14 @@ main {
     width: 40px;
     height: 40px;
     margin-top: 10px;
+    object-fit: cover;
 
     background-color: white;
     border-radius: 50%;
 }
 
 .contacted-user-pfp-header {
-    margin-top: 0px;
+    margin-top: auto;
 }
 
 .contacted-user-status {
@@ -121,7 +141,7 @@ main {
 /* Chat */
 #chat {
     height: 100%;
-    border-left: #727272 solid 1px;
+    border-left: var(--dark-09) solid 1px;
 
     display: flex;
     flex-direction: column;
@@ -139,7 +159,7 @@ main {
 
     border-radius: 0;
     border-top-right-radius: 7px;
-    border-bottom: #727272 solid 1px;
+    border-bottom: var(--dark-09) solid 1px;
 }
 
 
@@ -277,7 +297,7 @@ main {
 
 /* Chat message input */
 #chat-message {
-    background-color: var(--dark-01);
+    background-color: var(--dark-00);
     border-bottom-right-radius: 10px;
     padding: 10px;
 }
@@ -286,12 +306,18 @@ main {
     width: 100%;
     min-height: 40px;
     padding: 5px 20px;
+    background-color: var(--dark-02);
 
-    border: solid 1px white;
+    border: solid 1px var(--dark-09);
     border-radius: 50px;
 
     display: flex;
     justify-content: space-between;
+    transition: all 0.2s ease-in-out;
+}
+
+#chat-inputs:focus-within {
+    border: solid 1px white;
 }
 
 #chat-inputs.editing {

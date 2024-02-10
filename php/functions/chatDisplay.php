@@ -78,6 +78,8 @@
         // The message div
         $result =  '<div class = "msg '.$idUser.'" id = "'.$idMessage.'">
                         <div class = "msg-options">
+                            <i class="msg-option fa-solid fa-share"></i>
+                            <div class="msg-option-separator"></div>
                             <i class="msg-option fa-solid fa-copy" onClick="copyMessage(this.parentNode.parentNode.id)"></i>
                             '.$editable.'
                         </div>

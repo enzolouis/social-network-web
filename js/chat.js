@@ -1,8 +1,8 @@
-var connectedUser;
+var currentUser;
 var otherUser;
 
 function loadHeaderAndChat(login, otherLogin) {
-    connectedUser = login;
+    currentUser = login;
     otherUser = otherLogin;
     let contactedUser = document.getElementById(otherLogin);
     let contactedUserOnClick = contactedUser.onclick;
@@ -57,10 +57,24 @@ function loadHeader(otherLogin) {
         type: 'POST',
         url: '../functions/showHeader.php',
         data: {
+            cacheOnly: "true",
             otherUser: otherLogin,
         },
         success: function(data) {
             $('#chat-header').append(data);
+            $.ajax({
+                type: 'POST',
+                url: '../functions/showHeader.php',
+                data: {
+                    cacheOnly: "false",
+                    otherUser: otherLogin,
+                },
+                success: function(data) {
+                    if (data != "No changes") {
+                        $('#chat-header').html(data);
+                    }
+                }
+            })
         }
     })
 }
@@ -80,8 +94,9 @@ function editMessage(messageId) {
     let message = document.getElementById(messageId);
     let input   = document.getElementById("chat-message-text");
     let editBtn = document.getElementById("chat-message-edit");
-    let form    = document.getElementById("chat-inputs");  
+    let form    = document.getElementById("chat-inputs");
 
+    input.focus();
     editBtn.style.display = "block";
     form.classList.add("editing");
     message.classList.add("editing");
@@ -102,7 +117,6 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 function deleteMessage(messageId) {
     let chat = document.getElementById("chat-box");
     chat.removeChild(document.getElementById(messageId));
-    let chatContent = chat.innerHTML;
     $.ajax({
         type: 'POST',
         url: '../functions/deleteMessage.php',
@@ -110,18 +124,7 @@ function deleteMessage(messageId) {
             id: messageId,
         },
         success: function() {
-            $.ajax({
-                type: 'POST',
-                url: '../functions/sessionCache.php',
-                data: {
-                    currentUser: connectedUser,
-                    otherUser: otherUser,
-                    content: chatContent,
-                },
-                success: function(data) {
-                    console.log(data);
-                }
-            })
+            overrideChatCache(chat.innerHTML);
         }
     })
     document.getElementById("chat-popup").style.opacity = 1;
@@ -187,21 +190,18 @@ function sendMessage() {
 //  - Arguments: The whole chat-box div inner html
 //////////////////////////////////////////////////
 function overrideChatCache(chatContent) {
-
-    // Calls the chat update function inside the cache.php file
+    // Calls the chat update function inside the sessionCache.php file
     $.ajax({
         type: 'POST',
-        url: '../functions/cache.php',
+        url: '../functions/sessionCache.php',
         data: {
-            function: "chat",
-
-            user: connectedUser,
-            other: otherUser,
-            chat: chatContent
+            currentUser: currentUser,
+            otherUser: otherUser,
+            content: chatContent
         },
         success: function(data) {
-            if(data) console.log("%c SUCCES: Cache chat override", "color:green;");
-            else     console.log("%c ERREUR: Cache chat override", "color:red;");
+            if(data) console.log("%c SUCCESS: Cache chat override", "color:green;");
+            else     console.log("%c ERROR: Cache chat override", "color:red;");
         }
     })
 }

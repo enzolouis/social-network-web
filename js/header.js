@@ -4,9 +4,23 @@ function increaseHeaderWidth() {
 		span.style.opacity = "1";
 	})
 }
+
 function decreaseHeaderWidth() {
 	document.getElementById("header").style.width = '90px'
 	Array.from(document.getElementsByClassName("precision")).forEach((span) => {
 		span.style.opacity = "0";
+	})
+}
+
+function disconnect() {
+	$.ajax({
+		type: 'POST',
+		url: '../functions/databaseFunctions.php',
+		data: {
+			disconnect: true,
+		},
+		success: function(){
+			window.location.href = "../../index.php";
+		}
 	})
 }

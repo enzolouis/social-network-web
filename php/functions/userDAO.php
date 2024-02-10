@@ -81,7 +81,7 @@
      */
     function isSessionValid() : bool {
         session_start();
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
             $user = $_SESSION['user'];
             if ($user) {
                 return true;
@@ -130,11 +130,9 @@
      * @param  string $password User's password
      */
     function addUser(PDO $pdo, string $login, string $username, string $password) {
-        $stmt = prepare($pdo, "INSERT INTO user (login, username, password) VALUES (?, ?, ?, ?, ?)");
+        $stmt = prepare($pdo, "INSERT INTO user (login, username, password) VALUES (?, ?, ?)");
         $password = password_hash($password, PASSWORD_DEFAULT);
         execute($stmt, [$login, $username, $password]);
-        header("Location: ../index.php?created=true");
-        exit();
     }
 
     /**
@@ -148,6 +146,29 @@
         $stmt = prepare($pdo, "SELECT DISTINCT user.* FROM user, message WHERE ((message.receiver = :login AND message.sender = user.login) OR (message.sender = :login AND message.receiver = user.login)) AND user.login <> :login");
         execute($stmt, [":login" => $login]);
         
+        $users = array();
+        while ($contactedUser = $stmt->fetch()) {
+            $users[] = new User($contactedUser["login"], $contactedUser["username"], "Nothing to see here :)", $contactedUser["description"], $contactedUser["profilePicture"]);
+        }
+        return count($users) > 0 ? $users : null;
+    }
+
+    /**
+     * Returns all users whom login are close to the researched login
+     *
+     * @param PDO $pdo
+     * @param string $search
+     * @return void
+     */
+    function findSearchedUsers(PDO $pdo, string $search) : array | null {
+        $stmt = prepare($pdo,  "SELECT *
+                                FROM user
+                                WHERE login LIKE CONCAT('%', :search, '%')
+                                ORDER BY CHAR_LENGTH(login) - CHAR_LENGTH(:search),
+                                         LEVENSHTEIN(login, :search) 
+                                LIMIT 10");
+        execute($stmt, [":search" => $search]);
+
         $users = array();
         while ($contactedUser = $stmt->fetch()) {
             $users[] = new User($contactedUser["login"], $contactedUser["username"], "Nothing to see here :)", $contactedUser["description"], $contactedUser["profilePicture"]);

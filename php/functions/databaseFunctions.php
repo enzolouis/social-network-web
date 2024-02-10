@@ -1,9 +1,10 @@
 <?php
-    
+    $_PDO = createConnection();
+
     function createConnection() : PDO {
         $pdo = null;
         try {
-            $pdo = new PDO('mysql:host=sql11.freemysqlhosting.net;dbname=sql11681796;charset=utf8', 'sql11681796', 'cntZXW4Tx8');
+            $pdo = new PDO('mysql:host=sql8.freemysqlhosting.net;dbname=sql8683281;charset=utf8', 'sql8683281', 'MYnNqpW2Yp');
         } catch (Exception $e) {
             echo ("Failed to load database");
             exit(1);
@@ -28,10 +29,12 @@
     }
 
     function disconnect() {
-        session_destroy();
-        session_abort(); // Just in case, you never know
-        header("Location: ../index.php");
+        session_unset();
+        header("Location: ../../index.php");
         exit();
     }
 
-?>
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["disconnect"])) {
+        session_start();
+        disconnect();
+    }

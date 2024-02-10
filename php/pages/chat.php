@@ -16,19 +16,22 @@
 <html>
     <head>
         <script defer src="https://use.fontawesome.com/releases/v6.4.2/js/all.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <link rel = "stylesheet" href = "../../css/chat.css">
-    </head>    
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    </head>
     <body>
         <?php include("header.html"); ?>
         <main>
 
             <div id = "discussions">
                 <div id = "discussions-header">
-                    <h1>Chats</h1>
-                    <p>Test</p> 
+                    <div id = "user-search">
+                        <input type="text" id="user-search-input" placeholder="Search user..." autocomplete="off">
+                        <div class='chat-option-separator'></div>
+                        <i class="chat-option fa-solid fa-magnifying-glass"></i>
+                    </div>
                 </div>
-                    <?php echo showDiscussionsChats($pdo, $user->getLogin()); ?>
+                <?php echo showDiscussionsChats($pdo, $user->getLogin()); ?>
             </div>
 
             <!-- W in the shaaat -->
@@ -46,7 +49,7 @@
                 <!-- Message input -->
                 <div id = "chat-message">
                     <div id = "chat-inputs">
-                        <input type = "text" id = "chat-message-text" name = "text" placeholder="Enter message...">
+                        <input type = "text" id = "chat-message-text" name = "text" placeholder="Enter message..." autocomplete="off">
                         <i class="chat-option fa-solid fa-circle-xmark" id = "chat-message-edit" onclick = "stopEdit()"></i>
                         <div class='chat-option-separator'></div>
                         <i class="chat-option fa-solid fa-image"></i>
@@ -62,6 +65,5 @@
     </body>
 
     <script src="../../js/chat.js"></script>
+    <script src="../../js/searchUser.js"></script>
 </html> 
-
-<?php //disconnect(); ?>

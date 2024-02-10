@@ -36,6 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         addUser($pdo, $login, $username, $password);
+        header("Location: ../../index.php?created=true");
+        exit();
     }
 
     header("Location: ../pages/register.html");

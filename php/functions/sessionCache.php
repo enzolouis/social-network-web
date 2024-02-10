@@ -12,6 +12,7 @@
     function cacheChat(string $currentUser, string $otherUser, string $content) {
         $sessionVarName = "user:" . $currentUser . ':' . $otherUser;
         $_SESSION[$sessionVarName] = $content;
+        echo "Cached";
     }
 
     /**
@@ -24,6 +25,7 @@
     function cacheHeader(string $otherUser, string $content) {
         $sessionVarName = "header:" . $otherUser;
         $_SESSION[$sessionVarName] = $content;
+        echo "Cached";
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
