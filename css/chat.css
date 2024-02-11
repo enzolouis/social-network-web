@@ -136,7 +136,7 @@ main {
     overflow: hidden;
 }
 
-.contacted-user-message {
+.contacted-user-message, .contacted-user-description {
     font-size: 14px;
     color: grey;
 
