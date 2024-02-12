@@ -159,9 +159,12 @@ function sendMessage() {
             },
 
             success: function(data) {
-                console.log(data);
                 if (data) {
                     console.log("%c SUCCES: Update message", "color:green;");
+                    document.getElementById("chat-box").innerHTML += data;
+
+                    chat = document.getElementById("chat-box").innerHTML;
+                    overrideChatCache(chat);
                     input.value = "";
                 } else {
                     console.log("%c ERREUR: Update message", "color:red;");
