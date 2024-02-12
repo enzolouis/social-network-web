@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+    </head>
+
+    <body>
+
+        <input id="msg">
+        <button onclick="test()">ENVOIE</button>
+
+        <div id="div"></div>
+
+        <script>
+            var conn = new WebSocket('ws://localhost:8080');
+
+            conn.onopen = function(e) {
+                console.log("------------ Connection established! ------------");
+                //conn.send('Hello World');
+            };
+
+            conn.onmessage = function(e) {
+                let div = document.getElementById("div")
+                div.innerHTML += e.data + "<br>";
+            };
+
+
+            function test() {
+                conn.send(document.getElementById("msg").value)
+            }
+        </script>
+    </body>
+</html>

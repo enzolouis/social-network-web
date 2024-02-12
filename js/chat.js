@@ -149,8 +149,25 @@ function sendMessage() {
 
     // If its a new message
     if(messageId == null || messageId == "") { 
+        $.ajax({
+            type: 'POST',
+            url: '../functions/addMessage.php',
+            data: {
+                user: connectedUser,
+                otherUser: otherUser,
+                content:msg
+            },
 
-
+            success: function(data) {
+                console.log(data);
+                if (data) {
+                    console.log("%c SUCCES: Update message", "color:green;");
+                    input.value = "";
+                } else {
+                    console.log("%c ERREUR: Update message", "color:red;");
+                }
+            }
+        })
     // If it's an update
     } else {
 

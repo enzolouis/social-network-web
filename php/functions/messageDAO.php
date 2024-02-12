@@ -69,7 +69,7 @@
                         bool $liked) {
         $stmt = prepare($pdo, "INSERT INTO message (sender, receiver, sentDate, sentHour, content, liked) 
                                             VALUES (?, ?, NOW(), NOW(), ?, ?)");
-        execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked]);
+        return execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked]);
     }
 
     function deleteMessage(PDO $pdo, int $id) {
