@@ -30,6 +30,14 @@
                         <div class='chat-option-separator'></div>
                         <i class="chat-option fa-solid fa-magnifying-glass"></i>
                     </div>
+                    <div id="found-users">
+                        <div id="no-user-found">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <p>Couldn't find any user...<br>
+                                <span>We tried our best</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 <?php echo showDiscussionsChats($pdo, $user->getLogin()); ?>
             </div>

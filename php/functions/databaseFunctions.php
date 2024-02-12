@@ -1,5 +1,4 @@
 <?php
-    $_PDO = createConnection();
 
     function createConnection() : PDO {
         $pdo = null;

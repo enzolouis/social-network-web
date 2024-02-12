@@ -102,4 +102,24 @@
         return $interval->i + $interval->h * 60 + $interval->days * 24 * 60;
     }
 
-?>
+    function showSearchedUsers(PDO $pdo, string $currentUser, string $search) : string {
+        $users = findSearchedUsers($pdo, $currentUser, $search); 
+        $result = "";
+
+        if ($users) {
+            foreach ($users as $foundUser) {
+                $imageURL = empty($foundUser->getProfilePicture()) ? '' : 'src = "'. $foundUser->getProfilePicture() .'"';
+                $result .= '<div class = "contacted-user" id = "'. $foundUser->getLogin() .'" onclick="hideFoundUsers(); loadHeaderAndChat(\'' .$currentUser. '\', this.id);">
+                                <div class = "contacted-user-pfp-container">
+                                    <img class = "contacted-user-pfp" '. $imageURL .'>
+                                    <div class = "contacted-user-status"></div>
+                                </div>
+                                <div class = "contacted-user-infos">
+                                    <p class = "contacted-user-name">'.$foundUser->getUsername().'</p>
+                                    <p class = "contacted-user-description">'.$foundUser->getDescription().'</p>
+                                </div>
+                            </div>';
+            }
+        }
+        return $result;
+    }

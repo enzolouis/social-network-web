@@ -160,14 +160,16 @@
      * @param string $search
      * @return void
      */
-    function findSearchedUsers(PDO $pdo, string $search) : array | null {
+    function findSearchedUsers(PDO $pdo, string $currentUser, string $search) : array | null {
         $stmt = prepare($pdo,  "SELECT *
                                 FROM user
-                                WHERE login LIKE CONCAT('%', :search, '%')
+                                WHERE login <> :currentUser
+                                AND (LEVENSHTEIN(login, :search) < 3 
+                                OR login LIKE CONCAT('%', :search, '%'))
                                 ORDER BY CHAR_LENGTH(login) - CHAR_LENGTH(:search),
-                                         LEVENSHTEIN(login, :search) 
+                                         LEVENSHTEIN(login, :search)
                                 LIMIT 10");
-        execute($stmt, [":search" => $search]);
+        execute($stmt, [":search" => $search, ":currentUser" => $currentUser]);
 
         $users = array();
         while ($contactedUser = $stmt->fetch()) {

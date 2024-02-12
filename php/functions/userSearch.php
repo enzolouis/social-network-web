@@ -1,8 +1,10 @@
 <?php
-    session_start();
     require("databaseFunctions.php");
-    require("userDAO.php");
+    require("chatDisplay.php");
+    session_start();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["search"])) {
-        echo json_encode(findSearchedUsers($_PDO, $_POST["search"]));
+        $currentUser = $_SESSION["user"]->getLogin();
+        $search = $_POST["search"];
+        echo showSearchedUsers(createConnection(), $currentUser, $search);
     }
