@@ -68,7 +68,7 @@
                         string $content,
                         bool $liked) {
         $stmt = prepare($pdo, "INSERT INTO message (sender, receiver, sentDate, sentHour, content, liked) 
-                                            VALUES (?, ?, NOW(), NOW(), ?, ?)");
+                                            VALUES (?, ?, ?, ?, ?, ?)");
         return execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked]);
     }
 

@@ -112,14 +112,14 @@
             // Top chat date separator
             $previousSentDate = $messages[0]->getSentDate();
             $previousSentHour = $messages[0]->getSentHour();
-            $messageDate = $messages[0]->getSentDate()->format('F') . ' ' . $messages[0]->getSentDate()->format('m') . ' - ' . substr($messages[0]->getSentHour(), 0, 5);
+            $messageDate = $messages[0]->getSentDate()->format('F') . ' ' . $messages[0]->getSentDate()->format('d') . ' - ' . substr($messages[0]->getSentHour(), 0, 5);
             $result .= '<div class = "date-separator">'. $messageDate .'</div>';
 
             foreach ($messages as $message) {
 
                 // Checks if a date separator is needed and if yes adds it to the string
                 if (getTimeDifferenceInHours($message->getSentDate(), $message->getSentHour(), $previousSentDate, $previousSentHour) > 10) {
-                    $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('m') . ' - ' . substr($message->getSentHour(), 0, 5);
+                    $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('d') . ' - ' . substr($message->getSentHour(), 0, 5);
                     $result .= '<div class = "date-separator">'. $messageDate .'</div>';
                 }
 

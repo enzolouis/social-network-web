@@ -153,9 +153,9 @@ function sendMessage() {
             type: 'POST',
             url: '../functions/addMessage.php',
             data: {
-                user: connectedUser,
+                user: currentUser,
                 otherUser: otherUser,
-                content:msg
+                content: msg,
             },
 
             success: function(data) {
