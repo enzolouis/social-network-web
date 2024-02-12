@@ -15,14 +15,23 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title><?php echo $user->getUsername().' - Chats' ?></title>
+
         <script defer src="https://use.fontawesome.com/releases/v6.4.2/js/all.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <link rel = "stylesheet" href = "../../css/chat.css">
+
+        <meta charset = "utf-8">
+        <meta name = "language" content = "EN">
     </head>
+
     <body>
+        <!-- The side bar menu -->
         <?php include("header.html"); ?>
+
         <main>
 
+            <!-- Chats feed (all the available discussions) -->
             <div id = "discussions">
                 <div id = "discussions-header">
                     <div id = "user-search">
