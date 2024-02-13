@@ -5,7 +5,7 @@
         try {
             $pdo = new PDO('mysql:host=sql8.freemysqlhosting.net;dbname=sql8683281;charset=utf8', 'sql8683281', 'MYnNqpW2Yp');
         } catch (Exception $e) {
-            echo ("Failed to load database");
+            echo ("Failed to load database : ". $e->getMessage());
             exit(1);
         }
         return $pdo;

@@ -8,8 +8,7 @@
         if ($_POST["cacheOnly"] == "true") {
             if (empty($_SESSION[$sessionVarName])) {    
                 $pdo = createConnection();
-                $chatContent = showChatMessages($pdo, $_POST["user"], $_POST["otherUser"]);
-                $_SESSION[$sessionVarName] = $chatContent;
+                $_SESSION[$sessionVarName] = showChatMessages($pdo, $_POST["user"], $_POST["otherUser"]);
             } 
             echo $_SESSION[$sessionVarName];
         } else {

@@ -66,10 +66,13 @@
                         string $sentDate,
                         string $sentHour,
                         string $content,
-                        bool $liked) {
+                        bool $liked) : int | null {
         $stmt = prepare($pdo, "INSERT INTO message (sender, receiver, sentDate, sentHour, content, liked) 
                                             VALUES (?, ?, ?, ?, ?, ?)");
-        return execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked]);
+        if (execute($stmt, [$sender, $receiver, $sentDate, $sentHour, $content, $liked])) {
+            return $pdo->lastInsertId();
+        }
+        return null;
     }
 
     function deleteMessage(PDO $pdo, int $id) {

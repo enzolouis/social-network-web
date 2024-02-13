@@ -4,5 +4,5 @@
     require("chatDisplay.php");
 
     $pdo = createConnection();
-    addMessage($pdo, $_POST["user"], $_POST["otherUser"], date("Y-m-d"), date("H:i:s"), $_POST["content"], false);
-    echo addChatMessage("user_me", "", $_POST["content"]);
+    $messageId = addMessage($pdo, $_POST["user"], $_POST["otherUser"], date("Y-m-d"), date("H:i:s"), $_POST["content"], false);
+    echo addChatMessage("user_me", $messageId, $_POST["content"]);
