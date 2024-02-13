@@ -1,9 +1,26 @@
 var currentUser;
 var otherUser;
 
+var conn;
+
+function sendToServer(data) {
+    conn.send(data);
+}
+
 function loadHeaderAndChat(login, otherLogin) {
     currentUser = login;
     otherUser = otherLogin;
+    conn = new WebSocket("ws://localhost:8080?from=" + currentUser + "&to="+otherUser);
+
+    conn.onopen = function(e) {
+        console.log("------------ Connection established! ------------");
+    };
+
+    conn.onmessage = function(e) {
+        let div = document.getElementById("chat-box")
+        div.innerHTML += "<div>"+e.data+"</div>"
+    };
+
     let contactedUser = document.getElementById(otherLogin);
     let contactedUserOnClick = contactedUser.onclick;
     contactedUser.onclick = null;
@@ -148,7 +165,7 @@ function sendMessage() {
     let msg = input.value;
 
     // If its a new message
-    if(messageId == null || messageId == "") { 
+    if(messageId == null || messageId == "") {
         $.ajax({
             type: 'POST',
             url: '../functions/addMessage.php',
@@ -162,6 +179,7 @@ function sendMessage() {
                 if (data) {
                     console.log("%c SUCCES: Update message", "color:green;");
                     document.getElementById("chat-box").innerHTML += data;
+                    sendToServer(data);
 
                     chat = document.getElementById("chat-box").innerHTML;
                     overrideChatCache(chat);
