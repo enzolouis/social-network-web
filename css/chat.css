@@ -341,6 +341,20 @@ main {
     color: rgb(255, 255, 255, 0.5);
 }
 
+.hour-separator {
+    margin-bottom: 5px;
+    margin-top: 25px;
+    width: 100%;
+    color: var(--gray-02);
+}
+
+.hour-separator.user_me {
+    text-align: right;
+}
+
+.hour-separator.user_other {
+    text-align: left;
+}
 
 /* Chat message input */
 #chat-message {

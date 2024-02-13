@@ -3,7 +3,7 @@
     function createConnection() : PDO {
         $pdo = null;
         try {
-            $pdo = new PDO('mysql:host=sql8.freemysqlhosting.net;dbname=sql8683281;charset=utf8', 'sql8683281', 'MYnNqpW2Yp');
+            $pdo = new PDO('mysql:host=maxence-maury-balit.com;dbname=socialnetwork;port=3306;charset=utf8', 'remoteuser', 'ylapin');
         } catch (Exception $e) {
             echo ("Failed to load database : ". $e->getMessage());
             exit(1);

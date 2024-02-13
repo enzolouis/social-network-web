@@ -100,16 +100,13 @@ function updateDiscussionContent(newContent) {
     let userSearchInput = document.getElementById("user-search-input");
     
     let userInputValue = userSearchInput.value;
-    let userInputListeners = getEventListeners(userSearchInput);
-    
-    discussions.innerHTML = newContent;
+    removeChildrenExceptFirst(discussions);
+    discussions.innerHTML += newContent;
     
     userSearchInput = document.getElementById("user-search-input");
     userSearchInput.value = userInputValue;
-    userInputListeners.forEach(function(listener) {
-        console.log("data");
-        userSearchInput.addEventListener(listener.type, listener.listener);
-    });
+    addEventListenersFoundUsers();
+    addEventListenersSearchInput();
 }
 
 
