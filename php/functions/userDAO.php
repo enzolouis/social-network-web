@@ -143,7 +143,16 @@
      * @return void
      */
     function getContactedUsers(PDO $pdo, string $login) : array | null {
-        $stmt = prepare($pdo, "SELECT DISTINCT user.* FROM user, message WHERE ((message.receiver = :login AND message.sender = user.login) OR (message.sender = :login AND message.receiver = user.login)) AND user.login <> :login");
+        $stmt = prepare($pdo,  "SELECT DISTINCT user.* 
+                                FROM user, message 
+                                WHERE ((message.receiver = :login AND message.sender = user.login) 
+                                        OR (message.sender = :login AND message.receiver = user.login)) 
+                                AND user.login <> :login
+                                ORDER BY (
+                                    SELECT MAX(CONCAT(message.sentDate, ' ', message.sentHour))
+                                    FROM message
+                                    WHERE message.sender = user.login OR message.receiver = user.login
+                                ) DESC");
         execute($stmt, [":login" => $login]);
         
         $users = array();

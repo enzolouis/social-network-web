@@ -117,14 +117,19 @@
 
             foreach ($messages as $message) {
 
+                // Checks whether the message comes from the logged user or the other user
+                $id = ($message->getSender() == $self) ? "user_me" : "user_other";
+
                 // Checks if a date separator is needed and if yes adds it to the string
-                if (getTimeDifferenceInHours($message->getSentDate(), $message->getSentHour(), $previousSentDate, $previousSentHour) > 10) {
+                if (!($message->getSentDate() == $previousSentDate)) {
                     $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('d') . ' - ' . substr($message->getSentHour(), 0, 5);
                     $result .= '<div class = "date-separator">'. $messageDate .'</div>';
+                } else if (getTimeDifferenceInHours($message->getSentDate(), $message->getSentHour(), $previousSentDate, $previousSentHour) > 300) {
+                    $messageHour = substr($message->getSentHour(), 0, 5);
+                    $result .= '<div class = "'. $id .' hour-separator">'. $messageHour .'</div>';
                 }
 
                 // Makes the current message HTML string
-                $id = ($message->getSender() == $self) ? "user_me" : "user_other";
                 $result .= addChatMessage($id, $message->getId(), $message->getContent());
 
                 // Updates checking hours
@@ -189,6 +194,7 @@
         $interval = $secondSentDateTime->diff($firstSentDateTime);
         return $interval->i + $interval->h * 60 + $interval->days * 24 * 60;
     }
+
 
     function showSearchedUsers(PDO $pdo, string $currentUser, string $search) : string {
         $users = findSearchedUsers($pdo, $currentUser, $search); 

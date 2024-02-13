@@ -28,15 +28,17 @@ function loadHeaderAndChat(login, otherLogin) {
     loadChat(login, otherLogin);
     $(document).ajaxStop(function(){
         contactedUser.onclick = contactedUserOnClick;
-        scrollDownChat();
     });
+}
+
+function removeChildrenExceptFirst(element, numberOfChildrenKept = 1) {
+    while (element.childElementCount > numberOfChildrenKept) {
+        element.removeChild(element.lastChild);
+    }
 }
 
 function loadChat(login, otherLogin) {
     let chat = document.getElementById("chat-box");
-    while (chat.childElementCount > 1) {
-        chat.removeChild(chat.lastChild);
-    }
     $.ajax({
         type: 'POST',
         url: '../functions/showMessages.php',
@@ -46,7 +48,9 @@ function loadChat(login, otherLogin) {
             otherUser: otherLogin,
         },
         success: function(data) {
-            $('#chat-box').append(data);
+            removeChildrenExceptFirst(chat);
+            chat.innerHTML += data;
+            scrollDownChat();
             $.ajax({
                 type: 'POST',
                 url: '../functions/showMessages.php',
@@ -57,10 +61,9 @@ function loadChat(login, otherLogin) {
                 },
                 success: function(data) {
                     if (data != "No changes") {
-                        while (chat.childElementCount > 1) {
-                            chat.removeChild(chat.lastChild);
-                        }
-                        $('#chat-box').append(data);
+                        removeChildrenExceptFirst(chat);
+                        chat.innerHTML += data;
+                        scrollDownChat();
                     }
                 }
             })
@@ -69,7 +72,7 @@ function loadChat(login, otherLogin) {
 }
 
 function loadHeader(otherLogin) {
-    document.getElementById("chat-header").innerHTML = "";
+    let chatHeader = document.getElementById("chat-header");
     $.ajax({
         type: 'POST',
         url: '../functions/showHeader.php',
@@ -78,7 +81,7 @@ function loadHeader(otherLogin) {
             otherUser: otherLogin,
         },
         success: function(data) {
-            $('#chat-header').append(data);
+            chatHeader.innerHTML = data;
             $.ajax({
                 type: 'POST',
                 url: '../functions/showHeader.php',
@@ -88,12 +91,39 @@ function loadHeader(otherLogin) {
                 },
                 success: function(data) {
                     if (data != "No changes") {
-                        $('#chat-header').html(data);
+                        chatHeader.innerHTML = data;
                     }
                 }
             })
         }
     })
+}
+
+function loadDiscussions() {
+    $.ajax({
+        type: 'POST',
+        url: '../functions/showDiscussions.php',
+        data: {
+            currentUser: currentUser,
+        },
+        success: function(data) {
+            updateDiscussionContent(data);
+        }
+    })
+}
+
+function updateDiscussionContent(newContent) {
+    let discussions = document.getElementById("discussions");
+    let userSearchInput = document.getElementById("user-search-input");
+    
+    let userInputValue = userSearchInput.value;
+    removeChildrenExceptFirst(discussions);
+    discussions.innerHTML += newContent;
+    
+    userSearchInput = document.getElementById("user-search-input");
+    userSearchInput.value = userInputValue;
+    addEventListenersFoundUsers();
+    addEventListenersSearchInput();
 }
 
 
@@ -163,9 +193,10 @@ function sendMessage() {
     let input = document.getElementById("chat-message-text");
     let messageId = input.getAttribute("id-message");
     let msg = input.value;
+    let chat = document.getElementById("chat-box");
 
     // If its a new message
-    if(messageId == null || messageId == "") {
+    if (!messageId) { 
         $.ajax({
             type: 'POST',
             url: '../functions/addMessage.php',
@@ -187,6 +218,9 @@ function sendMessage() {
                 } else {
                     console.log("%c ERREUR: Update message", "color:red;");
                 }
+                input.value = "";
+                loadDiscussions();
+                scrollDownChat();
             }
         })
     // If it's an update
@@ -210,11 +244,12 @@ function sendMessage() {
                     stopEdit();
                     document.getElementById(messageId).getElementsByClassName("msg-text")[0].innerHTML = msg;
 
-                    chat = document.getElementById("chat-box").innerHTML;
+                    chat.innerHTML;
                     overrideChatCache(chat);
                 } else {
                     console.log("%c ERREUR: Update message", "color:red;");
                 }
+                loadDiscussions();
             }
         })
     }
@@ -264,3 +299,11 @@ function stopEdit() {
     input.value = "";
     editBtn.style.display = "none";
 }
+
+
+let chatInput = document.getElementById("chat-message-text");
+chatInput.addEventListener("keydown", function(e) {
+    if (e.key == "Enter") {
+        sendMessage();
+    }
+});

@@ -1,46 +1,62 @@
-var foundUsers = document.getElementById("found-users");
-var areVisibleFoundUsers = false;
-var isVisibleNoUserFound = true;
-var updateUserListXHR;
+let areVisibleFoundUsers = false;
+let isVisibleNoUserFound = true;
+let updateUserListXHR;
 
-var typingTimer;
-var doneTypingCountdown = 300;
-var input = document.getElementById("user-search-input");
+let typingTimer;
+let doneTypingCountdown = 300;
 
-var hoveredOnUser = false;
+let hoveredOnUser = false;
 
-foundUsers.addEventListener('mouseenter', () => {
-    hoveredOnUser = true;
-});
-
-foundUsers.addEventListener('mouseleave', () => {
-    hoveredOnUser = false;
-});
+addEventListenersSearchInput();
+addEventListenersFoundUsers();
 
 function hideFoundUsers() {
+    let foundUsers = document.getElementById("found-users");
+    console.log(foundUsers);
     foundUsers.style.display = "none";
     areVisibleFoundUsers = false; 
     hoveredOnUser = false;
 }
 
-input.addEventListener('keyup', () => {
-    clearTimeout(typingTimer);
-    if (input.value) {
-        typingTimer = setTimeout(() => { updateUserList(input.value) }, doneTypingCountdown);
-    } else {
-        foundUsers.style.display = "none";
-        areVisibleFoundUsers = false;
-    }
-});
+function addEventListenersSearchInput() {
+    let searchInput = document.getElementById("user-search-input");
+    let foundUsers = document.getElementById("found-users");
+    searchInput.addEventListener('keyup', () => {
+        clearTimeout(typingTimer);
+        if (searchInput.value) {
+            typingTimer = setTimeout(() => { updateUserList(searchInput.value) }, doneTypingCountdown);
+        } else {
+            hideFoundUsers();
+        }
+    });
+    
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value) {
+            foundUsers.style.display = "flex";
+            areVisibleFoundUsers = true;
+        }
+    });
 
-input.addEventListener('blur', () => {
-    if (!hoveredOnUser) {
-        foundUsers.style.display = "none";
-        areVisibleFoundUsers = false;
-    } 
-});
+    searchInput.addEventListener('blur', () => {
+        if (!hoveredOnUser) {
+            hideFoundUsers();
+        } 
+    });
+}
+
+function addEventListenersFoundUsers() {
+    let foundUsers = document.getElementById("found-users");
+    foundUsers.addEventListener('mouseenter', () => {
+        hoveredOnUser = true;
+    });
+    
+    foundUsers.addEventListener('mouseleave', () => {
+        hoveredOnUser = false;
+    });
+}
 
 function updateUserList(search) {
+    let foundUsers = document.getElementById("found-users");
     if (updateUserListXHR) {
         updateUserListXHR.abort();
     }
@@ -79,11 +95,6 @@ function updateUserList(search) {
             }
         })
     } else {
-        foundUsers.style.display = "none";
-        areVisibleFoundUsers = false;
+        hideFoundUsers();
     }
 }
-/*
-let searchInput = document.getElementById("user-search-input");
-searchInput.addEventListener("input", function() { updateUserList(searchInput.value) });
-*/
