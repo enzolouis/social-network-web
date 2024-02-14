@@ -18,7 +18,8 @@ function loadHeaderAndChat(login, otherLogin) {
 
     conn.onmessage = function(e) {
         let div = document.getElementById("chat-box")
-        div.innerHTML += "<div>"+e.data+"</div>"
+        div.innerHTML += e.data
+        scrollDownChat();
     };
 
     let contactedUser = document.getElementById(otherLogin);
@@ -210,6 +211,8 @@ function sendMessage() {
                 if (data) {
                     console.log("%c SUCCES: Update message", "color:green;");
                     document.getElementById("chat-box").innerHTML += data;
+                    
+                    data = replaceUserMeWithUserOther(data);
                     sendToServer(data);
 
                     chat = document.getElementById("chat-box").innerHTML;
@@ -255,6 +258,9 @@ function sendMessage() {
     }
 }
 
+function replaceUserMeWithUserOther(message) {
+    return message.replace('user_me', 'user_other');
+}
 
 /////  OVERRIDE CHAT CACHE  //////////////////////
 //  Updates the chat cache

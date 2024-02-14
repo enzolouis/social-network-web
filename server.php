@@ -33,13 +33,18 @@ class ServerImpl implements MessageComponentInterface {
         
         foreach ($this->clients as $client) { // BROADCAST
             echo "Conversation ciblée : de " . $client->login . " à " .$client->to. "\n";
+            echo "Conversation ciblée : de " . $conn->login . " à " .$conn->to. "\n";
             if ($conn == $client) {
                 echo "Conversation stoppé : la cible est pareil que l'envoyeur\n\n";
                 continue;
             }
             echo "Conversation conservé : la cible est différente de l'envoyeur\n";
-            if ($client->to != $conn->to) {
-                echo "Conversation stoppé : la cible n'est pas la cible spécifié\n\n";
+            if ($client->to != $conn->login) {
+                echo "Conversation stoppé : la personne qui recoit le message n'est pas le receveur\n\n";
+                continue;
+            }
+            if ($client->login != $conn->to) {
+                echo "Conversation stoppé : la personne sur le chat n'est pas l'envoyeur\n\n";
                 continue;
             }
             echo "Succès! Conversation conservé : la cible est la cible!";
