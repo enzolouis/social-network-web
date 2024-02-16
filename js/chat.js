@@ -163,6 +163,7 @@ function loadHeader(otherLogin) {
                     if (data != "No changes") {
                         chatHeader.innerHTML = data;
                     }
+                    // chatHeader.innerHTML += '<button class="design-button-test"><i class="fa-regular fa-star"></i><span>Follow</span></button>'
                 }
             })
         }
@@ -263,6 +264,9 @@ function sendMessage() {
 
     // Gets the input field, the message id and the new text inside the input
     let input = document.getElementById("chat-message-text");
+    if (!input.value)
+        return;
+
     let messageId = input.getAttribute("id-message");
     let msg = input.value;
     let chat = document.getElementById("chat-box");

@@ -56,7 +56,42 @@
 
                 <!-- Chat header  -->
                 <div class = "contacted-user" id = "chat-header">
+                    <button class="button primary-button" id="follow-button" onclick="follow()"><i class="fa-regular fa-star"></i><span>Follow</span></button>
+                    <button class="button secondary-button"><i class="fa-regular fa-star"></i><span>Following</span></button>
+                    <button class="button tertiary-button"><i class="fa-regular fa-star"></i><span>Infos</span></button>
+                    <button class="button primary-danger-button"><i class="fa-regular fa-star"></i><span>Block</span></button>
+                    <button class="button secondary-danger-button"><i class="fa-regular fa-star"></i><span>Unblock</span></button>
                 </div>
+
+                <script>
+                    function follow() {
+                        let followButton = document.getElementById("follow-button");
+                        followButton.children[0].classList.remove("fa-regular")
+                        followButton.children[0].classList.add("fa-solid")
+                        followButton.onclick = function() {unfollow()};
+                        followButton.style.transform = "scale(1.05)"
+                        setTimeout(() => {
+                            followButton.classList.remove("primary-button");
+                            followButton.classList.add("secondary-button");
+                            followButton.style.transform = "none"},
+                        100);
+                        followButton.children[1] .innerHTML = 'Following';
+                    }
+
+                    function unfollow() {
+                        let followButton = document.getElementById("follow-button");
+                        followButton.children[0].classList.remove("fa-solid")
+                        followButton.children[0].classList.add("fa-regular")
+                        followButton.onclick = function() {follow()};
+                        followButton.style.transform = "scale(1.05)"
+                        setTimeout(() => {
+                            followButton.classList.remove("secondary-button");
+                            followButton.classList.add("primary-button");
+                            followButton.style.transform = "none"},
+                        100);
+                        followButton.children[1] .innerHTML = 'Follow';
+                    }
+                </script>
 
                 <!-- Chat box -->
                 <div id = "chat-box">
@@ -76,6 +111,9 @@
                         <i class="chat-option fa-solid fa-paper-plane" id = "chat-message-submit" onclick = "sendMessage()"></i>
                     </div>
                 </div>
+            </div>
+
+            <div style="background:white;flex:1 0 10%;border-left:rgb(222, 222, 222) solid 1px">
             </div>
 
         </main>
