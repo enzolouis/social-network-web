@@ -3,7 +3,7 @@
     function createConnection() : PDO {
         $pdo = null;
         try {
-            $pdo = new PDO('mysql:host=maxence-maury-balit.com;dbname=socialnetwork;port=3306;charset=utf8', 'remoteuser', 'ylapin');
+            $pdo = new PDO('mysql:host=sql8.freemysqlhosting.net;dbname=sql8684796;charset=utf8', 'sql8684796', 'K66qpxFY8H');
         } catch (Exception $e) {
             echo ("Failed to load database : ". $e->getMessage());
             exit(1);
@@ -22,7 +22,7 @@
     function execute($stmt, $arguments = array()) : bool {
         $stmt->execute($arguments);
         if (!$stmt) {
-            echo "Execute error : " . $stmt->errorInfo(); return false; 
+            return false; 
         }
         return true;
     }

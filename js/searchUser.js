@@ -12,7 +12,6 @@ addEventListenersFoundUsers();
 
 function hideFoundUsers() {
     let foundUsers = document.getElementById("found-users");
-    console.log(foundUsers);
     foundUsers.style.display = "none";
     areVisibleFoundUsers = false; 
     hoveredOnUser = false;
@@ -62,10 +61,12 @@ function updateUserList(search) {
     }
     if (search) {
         updateUserListXHR = $.ajax({
-            type: 'POST',
-            url: '../functions/userSearch.php',
+            type: 'GET',
+            url: '../functions/chatDisplayCall.php',
             data: {
-                search: search,
+                section: "foundUsers",
+                loggedUser: loggedUser,
+                searchedUser: search,
             },
             success: function(users) {
                 let noUserFound = document.getElementById("no-user-found");

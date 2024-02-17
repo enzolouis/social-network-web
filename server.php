@@ -47,7 +47,7 @@ class ServerImpl implements MessageComponentInterface {
             //echo $conn->to . "\n";
             $client->send($msg);
         }
-        
+
     }
 
     public function onClose(ConnectionInterface $conn) {

@@ -8,12 +8,12 @@
         if ($_POST["cacheOnly"] == "true") {
             if (empty($_SESSION[$sessionVarName])){
                 $pdo = createConnection();
-                $_SESSION[$sessionVarName] = showChatHeader($pdo, $_POST["otherUser"]);
+                $_SESSION[$sessionVarName] = getChatHeader($pdo, $_POST["otherUser"]);
             } 
             echo $_SESSION[$sessionVarName];
         } else {
             $pdo = createConnection();
-            $headerContent = showChatHeader($pdo, $_POST["otherUser"]);
+            $headerContent = getChatHeader($pdo, $_POST["otherUser"]);
             if ($headerContent != $_SESSION[$sessionVarName]) {
                 $_SESSION[$sessionVarName] = $headerContent;
                 echo $_SESSION[$sessionVarName];

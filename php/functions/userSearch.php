@@ -6,5 +6,5 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["search"])) {
         $currentUser = $_SESSION["user"]->getLogin();
         $search = $_POST["search"];
-        echo showSearchedUsers(createConnection(), $currentUser, $search);
+        echo getFoundUsers(createConnection(), $currentUser, $search);
     }

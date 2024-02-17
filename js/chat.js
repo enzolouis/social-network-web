@@ -1,4 +1,4 @@
-var currentUser;
+var loggedUser;
 var otherUser;
 
 var conn;
@@ -7,10 +7,14 @@ function sendToServer(data) {
     conn.send(data);
 }
 
+function replaceUserMeWithUserOther(message) {
+    return message.replace('user_me', 'user_other');
+}
+
 function loadHeaderAndChat(login, otherLogin) {
-    currentUser = login;
+    loggedUser = login;
     otherUser = otherLogin;
-    conn = new WebSocket("ws://localhost:8080?from=" + currentUser + "&to="+otherUser);
+    conn = new WebSocket("ws://localhost:8080?from=" + loggedUser + "&to="+otherUser);
 
     conn.onopen = function(e) {
         console.log("------------ Connection established! ------------");
@@ -40,33 +44,16 @@ function removeChildrenExceptFirst(element, numberOfChildrenKept = 1) {
 function loadChat(login, otherLogin) {
     let chat = document.getElementById("chat-box");
     $.ajax({
-        type: 'POST',
-        url: '../functions/showMessages.php',
+        type: 'GET',
+        url: '../functions/chatDisplayCall.php',
         data: {
-            cacheOnly: "true",
-            user: login,
+            section: "chatMessages",
+            loggedUser: login,
             otherUser: otherLogin,
         },
         success: function(data) {
-            removeChildrenExceptFirst(chat);
-            chat.innerHTML += data;
+            chat.innerHTML = data;
             scrollDownChat();
-            $.ajax({
-                type: 'POST',
-                url: '../functions/showMessages.php',
-                data: {
-                    cacheOnly: "false",
-                    user: login,
-                    otherUser: otherLogin,
-                },
-                success: function(data) {
-                    if (data != "No changes") {
-                        removeChildrenExceptFirst(chat);
-                        chat.innerHTML += data;
-                        scrollDownChat();
-                    }
-                }
-            })
         }
     })
 }
@@ -74,37 +61,25 @@ function loadChat(login, otherLogin) {
 function loadHeader(otherLogin) {
     let chatHeader = document.getElementById("chat-header");
     $.ajax({
-        type: 'POST',
-        url: '../functions/showHeader.php',
+        type: 'GET',
+        url: '../functions/chatDisplayCall.php',
         data: {
-            cacheOnly: "true",
+            section: "chatHeader",
             otherUser: otherLogin,
         },
         success: function(data) {
             chatHeader.innerHTML = data;
-            $.ajax({
-                type: 'POST',
-                url: '../functions/showHeader.php',
-                data: {
-                    cacheOnly: "false",
-                    otherUser: otherLogin,
-                },
-                success: function(data) {
-                    if (data != "No changes") {
-                        chatHeader.innerHTML = data;
-                    }
-                }
-            })
         }
     })
 }
 
 function loadDiscussions() {
     $.ajax({
-        type: 'POST',
-        url: '../functions/showDiscussions.php',
+        type: 'GET',
+        url: '../functions/chatDisplayCall.php',
         data: {
-            currentUser: currentUser,
+            section: "discussions",
+            loggedUser: loggedUser,
         },
         success: function(data) {
             updateDiscussionContent(data);
@@ -159,24 +134,28 @@ function copyMessage(messageId) {
     navigator.clipboard.writeText(messageContent);
 }
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
 function deleteMessage(messageId) {
     let chat = document.getElementById("chat-box");
-    chat.removeChild(document.getElementById(messageId));
+    let message = document.getElementById(messageId);
+    // Prevents the user from clicking multiple time on the delete option or any other option
+    message.getElementsByClassName("msg-options")[0].style.pointerEvents = "none";
     $.ajax({
-        type: 'POST',
-        url: '../functions/deleteMessage.php',
+        type: 'DELETE',
+        url: '../functions/chatFunctions.php',
         data: {
-            id: messageId,
+            messageId: messageId,
         },
-        success: function() {
-            overrideChatCache(chat.innerHTML);
+        success: function(data) {
+            if (data == true) {  
+                //  If the message has been deleted, removes it from the chat and caches the result
+                chat.removeChild(message);
+                overrideChatCache(chat.innerHTML);
+            } else {
+                // If the message has not been deleted, restores the pointer events on the message options
+                message.getElementsByClassName("msg-options")[0].style.pointerEvents = "auto";
+            }
         }
     })
-    document.getElementById("chat-popup").style.opacity = 1;
-    setTimeout(() => document.getElementById("chat-popup").style.opacity = 0, "2000");
-    
 }
 
 
@@ -195,13 +174,14 @@ function sendMessage() {
     let msg = input.value;
     let chat = document.getElementById("chat-box");
 
+    let msgWithoutSpaces = msg.replace(' ', '');
     // If its a new message
-    if (!messageId) { 
+    if (!messageId && msgWithoutSpaces.length > 0) { 
         $.ajax({
             type: 'POST',
             url: '../functions/addMessage.php',
             data: {
-                user: currentUser,
+                user: loggedUser,
                 otherUser: otherUser,
                 content: msg,
             },
@@ -210,6 +190,7 @@ function sendMessage() {
                 if (data) {
                     console.log("%c SUCCES: Update message", "color:green;");
                     document.getElementById("chat-box").innerHTML += data;
+                    replaceUserMeWithUserOther(data);
                     sendToServer(data);
 
                     chat = document.getElementById("chat-box").innerHTML;
@@ -224,7 +205,7 @@ function sendMessage() {
             }
         })
     // If it's an update
-    } else {
+    } else if (msgWithoutSpaces.length > 0) {
 
         // Calls updateMessageText.php by giving the the message id and the new text
         $.ajax({
@@ -244,7 +225,7 @@ function sendMessage() {
                     stopEdit();
                     document.getElementById(messageId).getElementsByClassName("msg-text")[0].innerHTML = msg;
 
-                    chat.innerHTML;
+                    chat = document.getElementById("chat-box").innerHTML;
                     overrideChatCache(chat);
                 } else {
                     console.log("%c ERREUR: Update message", "color:red;");
@@ -268,7 +249,7 @@ function overrideChatCache(chatContent) {
         type: 'POST',
         url: '../functions/sessionCache.php',
         data: {
-            currentUser: currentUser,
+            currentUser: loggedUser,
             otherUser: otherUser,
             content: chatContent
         },

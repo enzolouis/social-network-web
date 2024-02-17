@@ -7,5 +7,5 @@
     $id = $_POST['id'];
     $msg = $_POST['text'];
 
-    echo updateMessageText($pdo, $id, $msg);
+    echo editMessage($pdo, $id, $msg);
     

@@ -18,7 +18,7 @@
         <title><?php echo $user->getUsername().' - Chats' ?></title>
 
         <script defer src="https://use.fontawesome.com/releases/v6.4.2/js/all.js"></script>
-        <script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <link rel = "stylesheet" href = "../../css/chat.css">
 
         <meta charset = "utf-8">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <?php echo showDiscussionsChats($pdo, $user->getLogin()); ?>
+                <?php echo getDiscussions($pdo, $user->getLogin()); ?>
             </div>
 
             <!-- W in the shaaat -->

@@ -17,7 +17,7 @@
      * @param  string $user     User's login
      * @return string
      */
-    function showDiscussionsChats(PDO $pdo, string $user) : string {
+    function getDiscussions(PDO $pdo, string $user) : string {
         $users = getContactedUsers($pdo, $user);
         $result = "";
 
@@ -64,7 +64,7 @@
      * @param  string $other    Other user's login
      * @return string
      */
-    function showChatHeader(PDO $pdo, string $other) : string {
+    function getChatHeader(PDO $pdo, string $other) : string {
 
         // Gets the other user's pfp
         $user = getUserByLogin($pdo, $other);
@@ -98,7 +98,7 @@
      * @param  string $other    Other user's login
      * @return string
      */
-    function showChatMessages(PDO $pdo, string $self, string $other) : string {
+    function getChatMessages(PDO $pdo, string $self, string $other) : string {
 
         // Gets all the messages exchanged between the two users as an array
         $messages = getMessagesBetweenPeople($pdo, $self, $other);
@@ -196,7 +196,7 @@
     }
 
 
-    function showSearchedUsers(PDO $pdo, string $currentUser, string $search) : string {
+    function getFoundUsers(PDO $pdo, string $currentUser, string $search) : string {
         $users = findSearchedUsers($pdo, $currentUser, $search); 
         $result = "";
 
