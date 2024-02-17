@@ -1,11 +1,18 @@
+
 function increaseHeaderWidth() {
-	document.getElementById("header").style.width = '390px'
-	Array.from(document.getElementsByClassName("precision")).forEach((span) => {
-		span.style.opacity = "1";
-	})
+	clearTimeout(typingTimer);
+
+	typingTimer = setTimeout(() => {
+		document.getElementById("header").style.width = '390px'
+		Array.from(document.getElementsByClassName("precision")).forEach((span) => {
+			span.style.opacity = "1";
+		})
+	}, 100);
 }
 
 function decreaseHeaderWidth() {
+	clearTimeout(typingTimer);
+	
 	document.getElementById("header").style.width = '90px'
 	Array.from(document.getElementsByClassName("precision")).forEach((span) => {
 		span.style.opacity = "0";

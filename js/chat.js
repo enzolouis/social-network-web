@@ -11,6 +11,55 @@ function replaceUserMeWithUserOther(message) {
     return message.replace('user_me', 'user_other');
 }
 
+class Format {
+    static formatSend(content) {
+        return ":send: " + content;
+    }
+
+    static formatDelete(id) {
+        return ":dele|" + id + ":";
+    }
+
+    static formatEdit(id, newcontent) {
+        return ":edit|" + id + ": " + newcontent;
+    }
+
+    static getMessageType(content) {
+        if (content.startsWith(":dele")) {
+            return "dele";
+        } else if (content.startsWith(":edit")) {
+            return "edit";
+        } else if (content.startsWith(":send")) {
+            return "send";
+        } else {
+            return "send";
+        }
+    }
+
+    static getIdFromDeleteMessage(content) {
+        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
+        return content.substring(6, firstSemiColon);
+    }
+
+    static getContentFromSendMessage(content) {
+        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
+        return content.substring(firstSemiColon+2, content.length);
+    }
+
+    static getIdFromEditMessage(content) {
+        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
+        console.log("originalcontent="+content)
+        console.log("id="+content.substring(6, firstSemiColon))
+        console.log("firstsemicolonindex="+firstSemiColon)
+        return content.substring(6, firstSemiColon);
+    }
+
+    static getContentFromEditMessage(content) {
+        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
+        return content.substring(firstSemiColon+2, content.length);
+    }
+}
+
 function loadHeaderAndChat(login, otherLogin) {
     loggedUser = login;
     otherUser = otherLogin;
@@ -22,7 +71,28 @@ function loadHeaderAndChat(login, otherLogin) {
 
     conn.onmessage = function(e) {
         let div = document.getElementById("chat-box")
-        div.innerHTML += "<div>"+e.data+"</div>"
+
+        const msg = e.data;
+
+        const mtype = Format.getMessageType(msg);
+        console.log(mtype)
+        switch (mtype) {
+            case "send":
+                //console.log("SEND?id=null&content=" + Format.getContentFromSendMessage(e.data))
+                div.innerHTML += Format.getContentFromSendMessage(msg);
+                break;
+            case "edit":
+                //console.log("EDIT?id=" + Format.getIdFromEditMessage() + "&content=" + Format.getContentFromEditMessage(msg))
+                document.getElementById(Format.getIdFromEditMessage(msg)).getElementsByClassName("msg-text")[0].innerHTML = Format.getContentFromEditMessage(msg);
+                break;
+            case "dele":
+                console.log("DELE?id=" + Format.getIdFromDeleteMessage(msg))
+                document.getElementById("chat-box").removeChild(document.getElementById(Format.getIdFromEditMessage(msg)));
+                break;
+            default:
+                console.log("bug");
+        }
+        scrollDownChat();
     };
 
     let contactedUser = document.getElementById(otherLogin);
@@ -135,6 +205,8 @@ function copyMessage(messageId) {
 }
 
 function deleteMessage(messageId) {
+    sendToServer(Format.formatDelete(messageId));
+
     let chat = document.getElementById("chat-box");
     let message = document.getElementById(messageId);
     // Prevents the user from clicking multiple time on the delete option or any other option
@@ -170,6 +242,9 @@ function sendMessage() {
 
     // Gets the input field, the message id and the new text inside the input
     let input = document.getElementById("chat-message-text");
+    if (!input.value)
+        return;
+
     let messageId = input.getAttribute("id-message");
     let msg = input.value;
     let chat = document.getElementById("chat-box");
@@ -190,8 +265,9 @@ function sendMessage() {
                 if (data) {
                     console.log("%c SUCCES: Update message", "color:green;");
                     document.getElementById("chat-box").innerHTML += data;
-                    replaceUserMeWithUserOther(data);
-                    sendToServer(data);
+                    
+                    data = replaceUserMeWithUserOther(data);
+                    sendToServer(Format.formatSend(data));
 
                     chat = document.getElementById("chat-box").innerHTML;
                     overrideChatCache(chat);
@@ -224,6 +300,7 @@ function sendMessage() {
 
                     stopEdit();
                     document.getElementById(messageId).getElementsByClassName("msg-text")[0].innerHTML = msg;
+                    sendToServer(Format.formatEdit(messageId, msg));
 
                     chat = document.getElementById("chat-box").innerHTML;
                     overrideChatCache(chat);
@@ -236,6 +313,9 @@ function sendMessage() {
     }
 }
 
+function replaceUserMeWithUserOther(message) {
+    return message.replace('user_me', 'user_other');
+}
 
 /////  OVERRIDE CHAT CACHE  //////////////////////
 //  Updates the chat cache

@@ -2,7 +2,7 @@
 
 html, body {
     height: 100%;
-    background-color: var(--background);
+    /* background-color: var(--background); */
 }
 
 main {
@@ -21,9 +21,7 @@ main {
     height: 10vh;
     width: auto;
 
-    border-top-left-radius: 7px;
     background-color: var(--dark-00);
-    color: white;
     border-bottom: var(--dark-09) solid 1px;
     position: relative;
 }
@@ -46,7 +44,6 @@ main {
     width: 100%;
     background-color: transparent;
     border: none;
-    color: white;
 }
 
 #user-search-input:focus {
@@ -102,34 +99,38 @@ main {
     flex-direction: column;
 
     background-color: var(--dark-02);
-    border-top-left-radius: 7px;
-    border-bottom-left-radius: 7px;
+    overflow:hidden;
 }
 
 .contacted-user {
     height: 60px;
-    margin: 4px 10px;
+    margin: 0px 10px;
 
     display: flex;
 
-    color: white;
     background-color: var(--dark-00);
-    border-radius: 10px;
+    border-radius: 5px;
+    cursor: pointer;
 
     transition: 0.2s ease-in-out;
 }
 
 .contacted-user:not(#chat-header):hover {
-    cursor: pointer;
     background-color: var(--dark-01);
-    transform: scale(1.02);
+
+}
+
+.contacted-user:not(#chat-header):hover > .contacted-user-pfp-container {
+    transform:scale(1.1);
+    margin:0 10px 0 25px;
 }
 
 .contacted-user:not(#chat-header):hover .contacted-user-status {
     border-color: var(--dark-01);
 }
 
-.contacted-user-pfp-container { 
+.contacted-user-pfp-container {
+    transition: 0.1s ease-in-out;
     margin: 0px 8px;
 }
 
@@ -152,7 +153,7 @@ main {
     width: 18px;
     height: 18px;
 
-    background-color: green;
+    background-color: var(--purple);
     border-radius: 50%;
     border: 4px solid var(--dark-01);
     transition: 0.2s ease-in-out;
@@ -200,12 +201,13 @@ main {
 #chat-header {
     width: 100% !important;
     height: 10vh;
+    cursor:auto;
+    align-items:center;
 
     margin: 0px !important;
     padding: 10px 25px;
 
     border-radius: 0;
-    border-top-right-radius: 7px;
     border-bottom: var(--dark-09) solid 1px;
 }
 
@@ -254,14 +256,22 @@ main {
 }
 
 .msg {
+
     display: inline-flex;
     flex-direction: column;
 
     margin: 1px;
 
     max-width: 75%;
-    border-radius: 5px;
+    border-radius: 10px;
     position: relative;
+    color:white;
+    font-size:19px;
+}
+
+.msg.user_me .msg-options {
+    left:-120px;
+    right:unset;
 }
 
 .msg-options {
@@ -270,8 +280,9 @@ main {
     background-color: var(--dark-01);
     border-radius: 25px;
     position: absolute;
-    top: -50%;
-    right: 4px;
+    right:-70px;
+    top:50%;
+    transform:translateY(-50%);
     padding: 6px 10px;
     flex-direction: row;
     transition: all 0.1s ease-in-out;
@@ -288,11 +299,11 @@ main {
     color: var(--gray-02);
     border-radius:50%; 
     transition: all 0.15s ease-in-out;
+    cursor: pointer;
 }
 
 .msg-option:hover {
-    color: white;
-    cursor: pointer;
+    color: black;
 }
 
 .msg-option.fa-trash:hover {
@@ -310,12 +321,32 @@ main {
 
 .msg.user_other {
     margin-right: auto;
-    background-color: rgb(199, 199, 199);
+    background-color: rgb(70, 70, 70);
+    border-top-left-radius: 0;
+    
+    color: var(--purple);
+    background-color: var(--very-light-purple);
 }
+
+/*
+.msg.user_other::before {
+    content:"";
+    position:absolute;
+    left:-10px;
+    bottom:50%;
+    height:2px;
+    width:20px;
+    background-color: rgb(70, 70, 70);
+}
+*/
 
 .msg.user_me {
     margin-left: auto;
-    background-color: rgb(22, 160, 133);
+    /*background-color: rgb(22, 160, 133);*/
+    border-bottom-right-radius: 0;
+
+    color: white;
+    background-color: var(--purple);
 }
 
 .msg-text {
@@ -328,7 +359,7 @@ main {
 }
 
 .msg.editing {
-    background-color: lightseagreen;
+    background-color: var(--light-purple);
 }
 
 .date-separator {
@@ -337,8 +368,8 @@ main {
 
     text-align: center;
 
-    border-bottom: 1px solid rgb(255, 255, 255, 0.25);
-    color: rgb(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .hour-separator {
@@ -359,7 +390,6 @@ main {
 /* Chat message input */
 #chat-message {
     background-color: var(--dark-00);
-    border-bottom-right-radius: 10px;
     padding: 10px;
 }
 
@@ -370,7 +400,7 @@ main {
     background-color: var(--dark-02);
 
     border: solid 1px var(--dark-09);
-    border-radius: 50px;
+    border-radius: 10px;
 
     display: flex;
     justify-content: space-between;
@@ -382,7 +412,7 @@ main {
 }
 
 #chat-inputs.editing {
-    border-color: lightseagreen;
+    border-color: var(--very-purple);
 }
 
 #chat-message-text {
@@ -392,7 +422,6 @@ main {
     margin: 0px 5px;
     width: 100%;
 
-    color: white;
     font-size: 15px;
 }
 
@@ -410,7 +439,7 @@ main {
 }
 
 .chat-option:hover {
-    color: white;
+    color: var(--black-00);
     cursor: pointer;
 }
 
@@ -431,4 +460,13 @@ main {
 
 #chat-message-edit {
     display: none;
+}
+
+
+#chat-message-submit {
+    color: var(--light-purple);
+}
+
+#chat-message-submit:hover {
+    color: var(--purple);
 }

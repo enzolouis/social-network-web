@@ -13,6 +13,7 @@ header {
     -o-transition: width 0.2s ease-in-out;
     transition: width 0.2s ease-in-out;
 	z-index: 1;
+	border-right:var(--dark-09) solid 1px;
 }
 
 /* items in container */
@@ -22,7 +23,7 @@ header > button {
 	background:none;
 	border:none;
 	cursor: pointer;
-	opacity:0.5;
+	opacity:0.8;
 	transition: opacity 0.1s linear;
 	white-space: nowrap;
 
