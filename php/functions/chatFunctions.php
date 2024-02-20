@@ -9,11 +9,21 @@
         case "POST":
             if (!empty($_POST["loggedUser"]) && 
                 !empty($_POST["otherUser"]) &&
-                !empty($_POST["message"])) {
+                !empty($_POST["message"]) &&
+                !empty($_POST["newGroup"])) {
                     $pdo = createConnection();
-                    $messageId = addMessage($pdo, $_POST["loggedUser"], $_POST["otherUser"], date("Y-m-d"), date("H:i:s"), $_POST["content"], false);
+                    $message = getLastMessage($pdo, $_POST["loggedUser"], $_POST["otherUser"]);
+                    $messageId = addMessage($pdo, $_POST["loggedUser"], $_POST["otherUser"], date("Y-m-d"), date("H:i:s"), $_POST["message"], false);
                     if ($messageId != null) {
-                        echo addChatMessage("user_me", $messageId, $_POST["content"]);
+                        $separator = addSeparator($message, new DateTime(), date("H:i:s"), "user_me", true);
+                        $newMessage = addChatMessage("user_me", $messageId, $_POST["message"], new DateTime(), date("H:i:s"));
+                        if ($_POST["newGroup"] == "true" || $separator) {
+                            $separatorToken = empty($separator) ? "no_separator:" : "separator";
+                            $imageURL = 'src = "' . getUserByLogin($pdo, $_POST["loggedUser"])->getProfilePicture() .'"';
+                            echo $separatorToken . addMessageGroup("user_me", $imageURL, $separator, $newMessage);
+                        } else {
+                            echo "no_separator:" . $newMessage;
+                        }
                     } else {
                         echo false;
                     }
@@ -31,9 +41,9 @@
         case "PATCH":
             $requestData = getParameters();
             if (!empty($requestData["messageId"]) &&
-                !empty($requestData["messageContent"])) {
+                !empty($requestData["message"])) {
                 $pdo = createConnection();
-                echo editMessage($pdo, $requestData["messageId"], $requestData["messageContent"]);
+                echo editMessage($pdo, $requestData["messageId"], $requestData["message"]);
             }
             break;
     }

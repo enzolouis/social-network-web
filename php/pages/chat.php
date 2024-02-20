@@ -48,7 +48,9 @@
                         </div>
                     </div>
                 </div>
-                <?php echo getDiscussions($pdo, $user->getLogin()); ?>
+                <div id="contacted-users">
+                    <?php echo getDiscussions($pdo, $user->getLogin()); ?>
+                </div>
             </div>
 
             <!-- W in the shaaat -->
@@ -56,11 +58,12 @@
 
                 <!-- Chat header  -->
                 <div class = "contacted-user" id = "chat-header">
+                    <!-- Chat header 
                     <button class="button primary-button" id="follow-button" onclick="follow()"><i class="fa-regular fa-star"></i><span>Follow</span></button>
                     <button class="button secondary-button"><i class="fa-regular fa-star"></i><span>Following</span></button>
                     <button class="button tertiary-button"><i class="fa-regular fa-star"></i><span>Infos</span></button>
                     <button class="button primary-danger-button"><i class="fa-regular fa-star"></i><span>Block</span></button>
-                    <button class="button secondary-danger-button"><i class="fa-regular fa-star"></i><span>Unblock</span></button>
+                    <button class="button secondary-danger-button"><i class="fa-regular fa-star"></i><span>Unblock</span></button> -->
                 </div>
 
                 <script>
@@ -119,6 +122,8 @@
         </main>
     </body>
 
+    <script src="../../js/chatDisplay.js"></script>
     <script src="../../js/chat.js"></script>
+    <script src="../../js/chatSocket.js"></script>
     <script src="../../js/searchUser.js"></script>
 </html> 

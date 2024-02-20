@@ -2,6 +2,7 @@
     require("messageDAO.php");
     require("userDAO.php");
 
+    $separatorID = 0;
 
     /**
      * Gives all the available chats of the current user as a formatted HTML string
@@ -102,44 +103,109 @@
 
         // Gets all the messages exchanged between the two users as an array
         $messages = getMessagesBetweenPeople($pdo, $self, $other);
+        $loggedUserPfp = getUserByLogin($pdo, $self)->getProfilePicture();
+        $otherUserPfp = getUserByLogin($pdo, $other)->getProfilePicture();
         $result = "";
         
         // If there is at least a message
         // For each one of them it will check its date and hour (to show a separator or no)
         // And check who's the sender and then make the correct HTML string for it (using addChatMessage)
         if ($messages) {
+            $previousMessageSender = ($messages[0]->getSender() == $self) ? "user_me" : "user_other";
+            $messagesGroup = '';
+            $isFirstMessage = true;
 
-            // Top chat date separator
-            $previousSentDate = $messages[0]->getSentDate();
-            $previousSentHour = $messages[0]->getSentHour();
-            $messageDate = $messages[0]->getSentDate()->format('F') . ' ' . $messages[0]->getSentDate()->format('d') . ' - ' . substr($messages[0]->getSentHour(), 0, 5);
-            $result .= '<div class = "date-separator">'. $messageDate .'</div>';
+            $currentGroupSeparator = addSeparator($messages[0], new DateTime("1970-01-01"), "10:00:00", $previousMessageSender);
 
             foreach ($messages as $message) {
+                if ($isFirstMessage) {
+                    // Makes the current message HTML string
+                    $messagesGroup .= addChatMessage($previousMessageSender, $message->getId(), $message->getContent(), $message->getSentDate(), $message->getSentHour());
+                    // Updates checking hours
+                    $previousSentDate = $message->getSentDate();
+                    $previousSentHour = $message->getSentHour();
+                    $isFirstMessage = false;
+                    continue;
+                }
 
                 // Checks whether the message comes from the logged user or the other user
-                $id = ($message->getSender() == $self) ? "user_me" : "user_other";
-
+                $lastMessageSender = ($message->getSender() == $self) ? "user_me" : "user_other";
+                
                 // Checks if a date separator is needed and if yes adds it to the string
-                if (!($message->getSentDate() == $previousSentDate)) {
-                    $messageDate = $message->getSentDate()->format('F') . ' ' . $message->getSentDate()->format('d') . ' - ' . substr($message->getSentHour(), 0, 5);
-                    $result .= '<div class = "date-separator">'. $messageDate .'</div>';
-                } else if (getTimeDifferenceInHours($message->getSentDate(), $message->getSentHour(), $previousSentDate, $previousSentHour) > 300) {
-                    $messageHour = substr($message->getSentHour(), 0, 5);
-                    $result .= '<div class = "'. $id .' hour-separator">'. $messageHour .'</div>';
+                $newSeparator = addSeparator($message, $previousSentDate, $previousSentHour, $lastMessageSender);
+                if ($newSeparator || $lastMessageSender != $previousMessageSender) {
+                    $imageURL = $previousMessageSender == "user_me" ? 'src = "'. $loggedUserPfp .'"' : 'src = "'. $otherUserPfp .'"';
+                    $result .= addMessageGroup($previousMessageSender, $imageURL, $currentGroupSeparator, $messagesGroup);
+                    $messagesGroup = '';
+                    $previousMessageSender = $lastMessageSender;
+
+                    // Store the separator for the current messages group
+                    $currentGroupSeparator = $newSeparator;
                 }
 
                 // Makes the current message HTML string
-                $result .= addChatMessage($id, $message->getId(), $message->getContent());
+                $messagesGroup .= addChatMessage($lastMessageSender, $message->getId(), $message->getContent(), $message->getSentDate(), $message->getSentHour());
 
                 // Updates checking hours
                 $previousSentDate = $message->getSentDate();
                 $previousSentHour = $message->getSentHour();
             }
+            $imageURL = $previousMessageSender == "user_me" ? 'src = "'. $loggedUserPfp .'"' : 'src = "'. $otherUserPfp .'"';
+            $result .= addMessageGroup($previousMessageSender, $imageURL, $newSeparator, $messagesGroup);
+
+            $result .= '</div>';
         }
 
         // Returns the formatted string
         return $result;
+    }
+
+    function addMessageGroup(string $lastMessageSender, string $imageURL, string $separator, string $messages) : string {
+        $result =   $separator .
+                    '<div class = "msg-group '. $lastMessageSender .'">
+                        <div class="msg-group-pfp">
+                            <img class = "contacted-user-pfp" '. $imageURL .'>
+                        </div>
+                        <div class="msg-group-messages">'
+                            . $messages .
+                        '</div>
+                    </div>';
+        return $result;
+    }
+
+    /**
+     * Adds a separator in betweens messages if enough time went by
+     *
+     * @param Message $message              The message to check
+     * @param DateTime $previousSentDate    The previous sent message's date
+     * @param string $previousSentHour      The previous sent message's hour
+     * @param string|null $sender           On who's side the separator is going to appear
+     * @return string                       
+     */
+    function addSeparator(Message $message, DateTime $previousSentDate, string $previousSentHour, string $sender, bool $reversed = false) : string {
+        // If both dates are different, create a date separator including the hour of the sent message 
+        if (!($message->getSentDate()->format("Y-m-d") == $previousSentDate->format("Y-m-d"))) {
+            if ($reversed) {
+                $messageDate = formatDate($previousSentDate, $previousSentHour);
+            } else {
+                $messageDate = formatDate($message->getSentDate(), $message->getSentHour());
+            }
+            $GLOBALS["separatorID"]++;
+            $separatorIDTemp = $GLOBALS["separatorID"];
+            return '<div class = "date-separator" id = "separator'.$separatorIDTemp.'">'. $messageDate .'</div>';
+        } // Else, if both dates are equal, check the minutes difference between these two, and add a separator if it's greater than 5 minutes
+        else if (getTimeDifferenceInMinutes($message->getSentDate(), $message->getSentHour(), $previousSentDate, $previousSentHour) > 5) {
+            if ($reversed) {
+                $messageHour = formatHour($previousSentHour);
+            } else {
+                $messageHour = formatHour($message->getSentHour());
+            }
+            $GLOBALS["separatorID"]++;
+            $separatorIDTemp = $GLOBALS["separatorID"];
+            return '<div class = "'. $sender .' hour-separator" id = "separator'.$separatorIDTemp.'">'. $messageHour .'</div>';
+        } else {
+            return '';
+        }
     }
 
 
@@ -151,7 +217,7 @@
      * @param  string $content      The content of the message 
      * @return string
      */
-    function addChatMessage(string $idUser, string $idMessage, string $content): string {
+    function addChatMessage(string $idUser, string $idMessage, string $content, DateTime $date, string $hour) : string {
 
         // If the message comes from the user, we can edit it and therefore we have the options available
         $editable = $idUser == "user_me" ? "<div class='msg-option-separator'></div>
@@ -161,7 +227,7 @@
         /* Else we can't so no options */   : '';
 
         // The message div
-        return '<div class = "msg '.$idUser.'" id = "'.$idMessage.'">
+        return '<div class = "msg '.$idUser.'" id = "'.$idMessage.'" id-date = "'. $date->format("Y-m-d") .'" id-hour = "'. formatHour($hour) .'">
                     <div class = "msg-options">
                         <i class="msg-option fa-solid fa-share"></i>
                         <div class="msg-option-separator"></div>
@@ -182,7 +248,7 @@
      * @param  string   $secondSentHour The hour of the second message
      * @return int
      */
-    function getTimeDifferenceInHours(DateTime $firstSentDate, string $firstSentHour,
+    function getTimeDifferenceInMinutes(DateTime $firstSentDate, string $firstSentHour,
                                       DateTime $secondSentDate, string $secondSentHour): int {
 
         // Formats the dates

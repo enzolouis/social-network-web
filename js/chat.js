@@ -1,177 +1,3 @@
-var loggedUser;
-var otherUser;
-
-var conn;
-
-function sendToServer(data) {
-    conn.send(data);
-}
-
-function replaceUserMeWithUserOther(message) {
-    return message.replace('user_me', 'user_other');
-}
-
-class Format {
-    static formatSend(content) {
-        return ":send: " + content;
-    }
-
-    static formatDelete(id) {
-        return ":dele|" + id + ":";
-    }
-
-    static formatEdit(id, newcontent) {
-        return ":edit|" + id + ": " + newcontent;
-    }
-
-    static getMessageType(content) {
-        if (content.startsWith(":dele")) {
-            return "dele";
-        } else if (content.startsWith(":edit")) {
-            return "edit";
-        } else if (content.startsWith(":send")) {
-            return "send";
-        } else {
-            return "send";
-        }
-    }
-
-    static getIdFromDeleteMessage(content) {
-        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
-        return content.substring(6, firstSemiColon);
-    }
-
-    static getContentFromSendMessage(content) {
-        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
-        return content.substring(firstSemiColon+2, content.length);
-    }
-
-    static getIdFromEditMessage(content) {
-        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
-        console.log("originalcontent="+content)
-        console.log("id="+content.substring(6, firstSemiColon))
-        console.log("firstsemicolonindex="+firstSemiColon)
-        return content.substring(6, firstSemiColon);
-    }
-
-    static getContentFromEditMessage(content) {
-        let firstSemiColon = content.substring(1, content.length).indexOf(":") + 1;
-        return content.substring(firstSemiColon+2, content.length);
-    }
-}
-
-function loadHeaderAndChat(login, otherLogin) {
-    loggedUser = login;
-    otherUser = otherLogin;
-    conn = new WebSocket("ws://localhost:8080?from=" + loggedUser + "&to="+otherUser);
-
-    conn.onopen = function(e) {
-        console.log("------------ Connection established! ------------");
-    };
-
-    conn.onmessage = function(e) {
-        let div = document.getElementById("chat-box")
-
-        const msg = e.data;
-
-        const mtype = Format.getMessageType(msg);
-        console.log(mtype)
-        switch (mtype) {
-            case "send":
-                //console.log("SEND?id=null&content=" + Format.getContentFromSendMessage(e.data))
-                div.innerHTML += Format.getContentFromSendMessage(msg);
-                break;
-            case "edit":
-                //console.log("EDIT?id=" + Format.getIdFromEditMessage() + "&content=" + Format.getContentFromEditMessage(msg))
-                document.getElementById(Format.getIdFromEditMessage(msg)).getElementsByClassName("msg-text")[0].innerHTML = Format.getContentFromEditMessage(msg);
-                break;
-            case "dele":
-                console.log("DELE?id=" + Format.getIdFromDeleteMessage(msg))
-                document.getElementById("chat-box").removeChild(document.getElementById(Format.getIdFromEditMessage(msg)));
-                break;
-            default:
-                console.log("bug");
-        }
-        scrollDownChat();
-    };
-
-    let contactedUser = document.getElementById(otherLogin);
-    let contactedUserOnClick = contactedUser.onclick;
-    contactedUser.onclick = null;
-    loadHeader(otherLogin);
-    loadChat(login, otherLogin);
-    $(document).ajaxStop(function(){
-        contactedUser.onclick = contactedUserOnClick;
-    });
-}
-
-function removeChildrenExceptFirst(element, numberOfChildrenKept = 1) {
-    while (element.childElementCount > numberOfChildrenKept) {
-        element.removeChild(element.lastChild);
-    }
-}
-
-function loadChat(login, otherLogin) {
-    let chat = document.getElementById("chat-box");
-    $.ajax({
-        type: 'GET',
-        url: '../functions/chatDisplayCall.php',
-        data: {
-            section: "chatMessages",
-            loggedUser: login,
-            otherUser: otherLogin,
-        },
-        success: function(data) {
-            chat.innerHTML = data;
-            scrollDownChat();
-        }
-    })
-}
-
-function loadHeader(otherLogin) {
-    let chatHeader = document.getElementById("chat-header");
-    $.ajax({
-        type: 'GET',
-        url: '../functions/chatDisplayCall.php',
-        data: {
-            section: "chatHeader",
-            otherUser: otherLogin,
-        },
-        success: function(data) {
-            chatHeader.innerHTML = data;
-        }
-    })
-}
-
-function loadDiscussions() {
-    $.ajax({
-        type: 'GET',
-        url: '../functions/chatDisplayCall.php',
-        data: {
-            section: "discussions",
-            loggedUser: loggedUser,
-        },
-        success: function(data) {
-            updateDiscussionContent(data);
-        }
-    })
-}
-
-function updateDiscussionContent(newContent) {
-    let discussions = document.getElementById("discussions");
-    let userSearchInput = document.getElementById("user-search-input");
-    
-    let userInputValue = userSearchInput.value;
-    removeChildrenExceptFirst(discussions);
-    discussions.innerHTML += newContent;
-    
-    userSearchInput = document.getElementById("user-search-input");
-    userSearchInput.value = userInputValue;
-    addEventListenersFoundUsers();
-    addEventListenersSearchInput();
-}
-
-
 /////  EDIT MESSAGE  /////////////////////////////
 //  Gets the selected message's text and puts it inside the input field
 //  Plus adds a 'id-message' attribute to the input, used to know later
@@ -180,6 +6,7 @@ function updateDiscussionContent(newContent) {
 //  - Call     : onclick edit button (hover message)
 //  - Arguments: messageId - self explanatory
 //////////////////////////////////////////////////
+var editedMessage;
 function editMessage(messageId) {
 
     // Gets the message and the input field
@@ -187,6 +14,7 @@ function editMessage(messageId) {
     let input   = document.getElementById("chat-message-text");
     let editBtn = document.getElementById("chat-message-edit");
     let form    = document.getElementById("chat-inputs");
+    editedMessage = message.getElementsByClassName("msg-text")[0].innerHTML;
 
     input.focus();
     editBtn.style.display = "block";
@@ -194,23 +22,34 @@ function editMessage(messageId) {
     message.classList.add("editing");
 
     input.setAttribute("id-message", messageId);
-    input.value = message.getElementsByClassName("msg-text")[0].innerHTML;
+    input.value = editedMessage;
+    enableMessageSubmitButton();
 }
 
-
+/** 
+ * Pastes a message into the clipboard
+ * 
+ * @param {number} messageId - The copied message's ID
+ */
 function copyMessage(messageId) {
     let message = document.getElementById(messageId);
     let messageContent = message.getElementsByClassName("msg-text")[0].innerHTML;
     navigator.clipboard.writeText(messageContent);
 }
 
+/** 
+ * Deletes a message, both from the display and the database with an AJAX call
+ * 
+ * @param {number} messageId - the deleted message's ID
+ */
 function deleteMessage(messageId) {
-    sendToServer(Format.formatDelete(messageId));
 
-    let chat = document.getElementById("chat-box");
     let message = document.getElementById(messageId);
-    // Prevents the user from clicking multiple time on the delete option or any other option
+
+    // Prevents the user from clicking multiple times on the delete option or any other option
+    // while the message is being deleted
     message.getElementsByClassName("msg-options")[0].style.pointerEvents = "none";
+
     $.ajax({
         type: 'DELETE',
         url: '../functions/chatFunctions.php',
@@ -219,9 +58,11 @@ function deleteMessage(messageId) {
         },
         success: function(data) {
             if (data == true) {  
-                //  If the message has been deleted, removes it from the chat and caches the result
-                chat.removeChild(message);
-                overrideChatCache(chat.innerHTML);
+                // Notify the other user
+                sendToServer(Format.formatDelete(messageId));
+                // If the message has been deleted, removes it from the chat and caches the result
+                deleteMessageAndUpdateSeparators(message);
+                overrideChatCache(document.getElementById("chat-box").innerHTML);
             } else {
                 // If the message has not been deleted, restores the pointer events on the message options
                 message.getElementsByClassName("msg-options")[0].style.pointerEvents = "auto";
@@ -229,7 +70,6 @@ function deleteMessage(messageId) {
         }
     })
 }
-
 
 /////  SEND MESSAGE  /////////////////////////////
 //  This function is the main one
@@ -239,82 +79,112 @@ function deleteMessage(messageId) {
 //  - Call : onclick chat submit button
 //////////////////////////////////////////////////
 function sendMessage() {
-
-    // Gets the input field, the message id and the new text inside the input
     let input = document.getElementById("chat-message-text");
-    if (!input.value)
-        return;
-
     let messageId = input.getAttribute("id-message");
-    let msg = input.value;
-    let chat = document.getElementById("chat-box");
+    let message = input.value;
 
-    let msgWithoutSpaces = msg.replace(' ', '');
-    // If its a new message
-    if (!messageId && msgWithoutSpaces.length > 0) { 
+    let canSendMessage = canSend;
+    disableMessageSubmitButton();
+    input.value = "";
+
+    let msgWithoutSpaces = message.replace(' ', '');
+
+    // If it's a new message
+    if (!messageId && msgWithoutSpaces.length > 0 && canSendMessage) { 
+        let lastMessageGroup = document.querySelectorAll(".msg-group");
+        lastMessageGroup = lastMessageGroup[lastMessageGroup.length - 1];
+        newGroup = lastMessageGroup.classList.contains("user_other");
+        console.log("On doit crée un nouveau group ? " + newGroup);
         $.ajax({
             type: 'POST',
-            url: '../functions/addMessage.php',
+            url: '../functions/chatFunctions.php',
             data: {
-                user: loggedUser,
+                loggedUser: loggedUser,
                 otherUser: otherUser,
-                content: msg,
+                message: message,
+                newGroup: newGroup,
             },
-
             success: function(data) {
                 if (data) {
                     console.log("%c SUCCES: Update message", "color:green;");
-                    document.getElementById("chat-box").innerHTML += data;
                     
+                    addNewMessageOrGroup(newGroup, data, lastMessageGroup);
+
+                    // Send the received message to the other user
                     data = replaceUserMeWithUserOther(data);
                     sendToServer(Format.formatSend(data));
 
-                    chat = document.getElementById("chat-box").innerHTML;
-                    overrideChatCache(chat);
-                    input.value = "";
+                    overrideChatCache(document.getElementById("chat-box").innerHTML);
+                    loadContactedUsers();
+                    scrollDownChat();
                 } else {
                     console.log("%c ERREUR: Update message", "color:red;");
                 }
-                input.value = "";
-                loadDiscussions();
-                scrollDownChat();
             }
         })
-    // If it's an update
-    } else if (msgWithoutSpaces.length > 0) {
-
-        // Calls updateMessageText.php by giving the the message id and the new text
-        $.ajax({
-            type: 'POST',
-            url: '../functions/updateMessageText.php',
-            data: {
-                id: messageId,
-                text: msg
-            },
-
-            // After the call is done, if it went fine:
-            // Empty the input, remove the 'id-message' attribute and updates the message text
-            success: function(data) {
-                if(data) {
-                    console.log("%c SUCCES: Update message", "color:green;");
-
-                    stopEdit();
-                    document.getElementById(messageId).getElementsByClassName("msg-text")[0].innerHTML = msg;
-                    sendToServer(Format.formatEdit(messageId, msg));
-
-                    chat = document.getElementById("chat-box").innerHTML;
-                    overrideChatCache(chat);
-                } else {
-                    console.log("%c ERREUR: Update message", "color:red;");
+    // If it's an edit
+    } else if (messageId && msgWithoutSpaces.length > 0) {
+        if (editedMessage !== message) {
+            $.ajax({
+                type: 'PATCH',
+                url: '../functions/chatFunctions.php',
+                data: {
+                    messageId: messageId,
+                    message: message
+                },
+                // After the call is done, if it went fine,
+                // Empty the input, remove the 'id-message' attribute and updates the message text
+                success: function(data) {
+                    if (data) {
+                        console.log("%c SUCCES: Update message", "color:green;");
+    
+                        document.getElementById(messageId).getElementsByClassName("msg-text")[0].innerHTML = message;
+                        sendToServer(Format.formatEdit(messageId, message));
+    
+                        overrideChatCache(document.getElementById("chat-box").innerHTML);
+                        stopEdit();
+                        loadContactedUsers();
+                    } else {
+                        console.log("%c ERREUR: Update message", "color:red;");
+                    }
                 }
-                loadDiscussions();
-            }
-        })
+            })
+        } else {
+            stopEdit();
+        }
     }
 }
 
-function replaceUserMeWithUserOther(message) {
-    return message.replace('user_me', 'user_other');
+function addNewMessageOrGroup(newGroup, message, lastMessageGroup) {
+    // If the last message is sent by the logged user and a new separator hasn't been inserted
+    if (!newGroup && !hasSeparator(message)) {
+        console.log(message);
+        console.log("Meme groupe");
+        // Append the new message to the current messages group
+        lastMessageGroup.querySelector(".msg-group-messages").innerHTML += formatReceivedMessage(message);
+    } else {
+        console.log("Nouveau groupe");
+        console.log(message);
+        // Else, append the newly created messages group to the chat
+        document.getElementById("chat-box").innerHTML += formatReceivedMessage(message);
+    }
+}
+
+/**
+ * Gets the message input back to a normal state, leaving "Edit message" state
+ */
+function stopEdit() {
+    let input    = document.getElementById("chat-message-text");
+    let editBtn  = document.getElementById("chat-message-edit");
+    let editings = document.getElementsByClassName("editing");
+
+    while (editings.length) {
+        editings[0].classList.remove("editing");
+    }
+
+    input.removeAttribute("id-message");
+    input.value = "";
+    editBtn.style.display = "none";
 }
 
 /////  OVERRIDE CHAT CACHE  //////////////////////
@@ -340,31 +210,46 @@ function overrideChatCache(chatContent) {
     })
 }
 
+function hasSeparator(message) {
+    let firstSemiColon = message.indexOf(":");
+    return message.substring(0, firstSemiColon) === "separator";
+} 
 
-function scrollDownChat() {
-    let chat = document.getElementById("chat-box");
-    chat.scrollTop = chat.scrollHeight;
-}
+function formatReceivedMessage(message) {
+    let firstSemiColon = message.indexOf(":") + 1;
+    return message.substring(firstSemiColon, message.length);
+} 
 
-
-function stopEdit() {
-    let input    = document.getElementById("chat-message-text");
-    let editBtn  = document.getElementById("chat-message-edit");
-    let editings = document.getElementsByClassName("editing");
-
-    while(editings.length) {
-        editings[0].classList.remove("editing");
-    }
-
-    input.removeAttribute("id-message");
-    input.value = "";
-    editBtn.style.display = "none";
-}
-
-
+/**
+ * Configure the chat send message input
+ */
+var canSend = false;
 let chatInput = document.getElementById("chat-message-text");
+
 chatInput.addEventListener("keydown", function(e) {
-    if (e.key == "Enter") {
+    if (e.key == "Enter" && canSend) {
         sendMessage();
     }
 });
+
+chatInput.addEventListener("input", function() {
+    if (this.value && !canSend) {
+        enableMessageSubmitButton();
+    } else if (!this.value) { 
+        disableMessageSubmitButton();
+    }
+});
+
+function enableMessageSubmitButton() {
+    let chatMessageSubmit = document.getElementById("chat-message-submit");
+    chatMessageSubmit.style.color = "var(--light-purple)";
+    chatMessageSubmit.style.pointerEvents = "auto";
+    canSend = true;
+}
+
+function disableMessageSubmitButton() {
+    let chatMessageSubmit = document.getElementById("chat-message-submit");
+    chatMessageSubmit.style.color = "var(--gray-02)";
+    chatMessageSubmit.style.pointerEvents = "none";
+    canSend = false;
+}

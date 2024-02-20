@@ -55,7 +55,7 @@
         }
 
         public function __toString(){
-            return $this->_content . "<br>";
+            return $this->_sentDate->format('F') . ' ' . $this->_sentDate->format('d') . ' - ' . $this->_sentHour . ' | ' . $this->_content . "<br>";
         }
         
     }
@@ -97,4 +97,21 @@
         }
         return count($messages) > 0 ? $messages : null;
     }
+
+    function getLastMessage(PDO $pdo, string $personOne, string $personTwo) : Message | null {
+        $stmt = prepare($pdo, "SELECT * FROM message WHERE sender IN (:personOne, :personTwo) AND receiver IN (:personOne, :personTwo) ORDER BY sentDate DESC, sentHour DESC, id DESC LIMIT 1");
+        execute($stmt, [":personOne" => $personOne, ":personTwo" => $personTwo]);
+
+        if ($message = $stmt->fetch()) {
+            return new Message($message["id"], $message["sender"], $message["receiver"], new DateTime($message["sentDate"]), $message["sentHour"], $message["content"], $message["liked"]);
+        }
+        return null;
+    }
   
+    function formatDate(DateTime $date, string $hour) : string {
+        return $date->format('F') . ' ' . $date->format('d') . ' - ' . formatHour($hour);
+    }
+
+    function formatHour(string $hour) : string {
+        return substr($hour, 0, 5);
+    }
